@@ -1,24 +1,11 @@
-import { BrowserRouter, Route, Routes } from "react-router-dom";
+import { BrowserRouter, Routes, Route } from "react-router-dom";
 import { lazy, Suspense } from "react";
 
-import FrontLayout from "../layouts/Frontlayout";
-import BackendLayout from "../layouts/BackendLayout";
-import Dashboard from "../(__backend)/pages/dashboard/Dashboard";
-import Profile from "../(__backend)/pages/profile/Profile";
-import Settings from "../(__backend)/pages/seetings/Setting";
-import Users from "../(__backend)/pages/users/Users";
-import DepositFunds from "../(__backend)/pages/deposit-funds/DepositFunds";
-import TradeSettlements from "../(__backend)/pages/trade-settlements/TradeSettlements";
-import BankManagement from "../(__backend)/pages/bank-management/BankManagement";
-import Withdraw from "../(__backend)/pages/withdraw/Withdraw";
-import UserProfile from "../(__backend)/pages/users/UserProfile";
-import MetaAppPassword from "../(__backend)/pages/meta-app-password/MetaAppPassword";
-import Offer from "../(__backend)/pages/offer/Offer";
-import ChnagePassword from "../(__backend)/pages/profile/ChnagePassword";
-import Ticket from "../(__backend)/pages/tickets/Ticket";
-import TicketReplyForm from "../(__backend)/pages/tickets/TicketReplyForm";
+// Layouts
+const FrontLayout = lazy(() => import("../layouts/Frontlayout"));
+const BackendLayout = lazy(() => import("../layouts/BackendLayout"));
 
-// Lazy Loaded Pages
+// Frontend Pages
 const Home = lazy(() => import("../(__frontend)/pages/home/Home"));
 const ContactUs = lazy(() => import("../(__frontend)/pages/contact-us/ContactUs"));
 const LegalDocuments = lazy(() => import("../(__frontend)/pages/legal-documents/LegalDocuments"));
@@ -36,24 +23,39 @@ const OpenAcount = lazy(() => import("../(__frontend)/pages/open-account/OpenAcc
 const Login = lazy(() => import("../(__frontend)/pages/login/Login"));
 const Signup = lazy(() => import("../(__frontend)/pages/signup/Signup"));
 
-function Loader() {
-  return (
-    <div
-      className="d-flex justify-content-center align-items-center"
-      style={{ height: "100vh" }}
-    >
-      <div className="spinner-border text-primary" role="status">
-        <span className="visually-hidden">Loading...</span>
-      </div>
+// Backend Pages
+const Dashboard = lazy(() => import("../(__backend)/pages/dashboard/Dashboard"));
+const Profile = lazy(() => import("../(__backend)/pages/profile/Profile"));
+const Settings = lazy(() => import("../(__backend)/pages/seetings/Setting"));
+const Users = lazy(() => import("../(__backend)/pages/users/Users"));
+const UserProfile = lazy(() => import("../(__backend)/pages/users/UserProfile"));
+const ChnagePassword = lazy(() => import("../(__backend)/pages/profile/ChnagePassword"));
+const MetaAppPassword = lazy(() => import("../(__backend)/pages/meta-app-password/MetaAppPassword"));
+const DepositFunds = lazy(() => import("../(__backend)/pages/deposit-funds/DepositFunds"));
+const TradeSettlements = lazy(() => import("../(__backend)/pages/trade-settlements/TradeSettlements"));
+const BankManagement = lazy(() => import("../(__backend)/pages/bank-management/BankManagement"));
+const Withdraw = lazy(() => import("../(__backend)/pages/withdraw/Withdraw"));
+const Offer = lazy(() => import("../(__backend)/pages/offer/Offer"));
+const Ticket = lazy(() => import("../(__backend)/pages/tickets/Ticket"));
+const TicketReplyForm = lazy(() => import("../(__backend)/pages/tickets/TicketReplyForm"));
+
+const Loader = () => (
+  <div
+    className="d-flex justify-content-center align-items-center"
+    style={{ height: "100vh" }}
+  >
+    <div className="spinner-border text-primary" role="status">
+      <span className="visually-hidden">Loading...</span>
     </div>
-  );
-}
+  </div>
+);
 
 function RouteComponent() {
   return (
     <BrowserRouter>
       <Suspense fallback={<Loader />}>
         <Routes>
+          {/* Frontend Routes */}
           <Route path="/" element={<FrontLayout />}>
             <Route index element={<Home />} />
             <Route path="contact-us" element={<ContactUs />} />
@@ -73,6 +75,8 @@ function RouteComponent() {
             <Route path="broker-login" element={<Login />} />
             <Route path="register" element={<Signup />} />
           </Route>
+
+          {/* Backend Routes */}
           <Route path="/admin" element={<BackendLayout />}>
             <Route index element={<Dashboard />} />
             <Route path="profile" element={<Profile />} />

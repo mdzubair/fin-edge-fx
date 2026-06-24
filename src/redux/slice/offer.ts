@@ -183,7 +183,7 @@ const offerSlice = createSlice({
         state.loading = false;
         state.offer = action.payload;
       })
-      .addCase(deleteOfferById.rejected, (state, action) => {
+      .addCase(deleteOfferById.rejected, (state) => {
         state.loading = false;
         // state.error = action.payload || "Failed to delete offer" as string|null;
       })
