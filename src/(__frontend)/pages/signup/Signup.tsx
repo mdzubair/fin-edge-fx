@@ -109,7 +109,7 @@ const Signup = () => {
 
                 <div className="logo-wrapper">
                   <div className="logo-circle">
-                    <img src={"./public/favicon.png"} height={90}/>
+                    <img src={"/favicon.png"} height={90}/>
                   </div>
                 </div>
 

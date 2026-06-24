@@ -111,7 +111,7 @@ const onSubmit = async ( data: LoginFormData ) => {
                  <div className="logo-wrapper">
                   <div className="logo-circle">
                     {/* FX */}
-                    <img src={"./public/favicon.png"} height={90}/>
+                    <img src={"/favicon.png"} height={90}/>
                   </div>
                 </div>
 
