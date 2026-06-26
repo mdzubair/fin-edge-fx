@@ -78,17 +78,17 @@ useEffect(() => {
           )}
          
           <li className="nav-item dropdown">
-            <a
+            <Link
               className="nav-icon dropdown-toggle d-inline-block d-sm-none"
-              href="#"
+              to={""}
               data-bs-toggle="dropdown"
             >
               <i className="fas fa-cog"></i>
-            </a>
+            </Link>
 
-            <a
+            <Link
               className="nav-link dropdown-toggle d-none d-sm-inline-block"
-              href="#"
+              to={""}
               data-bs-toggle="dropdown"
             >
               <img
@@ -97,7 +97,7 @@ useEffect(() => {
                 alt="Admin"
               />
               <span className="text-dark">{auth && auth?.user?.firstName} {auth && auth?.user?.lastName}</span>
-            </a>
+            </Link>
 
             <div className="dropdown-menu dropdown-menu-end">
               <Link
