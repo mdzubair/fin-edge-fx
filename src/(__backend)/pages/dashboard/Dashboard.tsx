@@ -1,4 +1,17 @@
+import { useEffect } from "react";
+import { getUsdPrice } from "../../../redux/slice/currency";
+import { useDispatch } from "react-redux";
+import type { AppDispatch } from "../../../redux/store";
+
 function Dashboard() {
+ const dispatch = useDispatch<AppDispatch>();
+useEffect(()=>{
+  alert()
+  dispatch(getUsdPrice())
+},[dispatch])
+
+
+
     return (
       <div className="container-fluid p-0">
         <div className="row mb-2 mb-xl-3">
