@@ -72,44 +72,51 @@ function TradeSettlements() {
       
 
       <div className="card mt-4 shadow-sm border-0">
-        <div className="card-header d-flex flex-column flex-md-row justify-content-between align-items-start align-items-md-center gap-3">
-          <h5 className="mb-0">Settlement List</h5>
+        <div className="card-header d-flex justify-content-between align-items-center flex-wrap gap-2">
+          <h5 className="mb-0">
+            Settlement List
+          </h5>
 
-          <div className="btn-group w-100 w-md-auto">
+          <div className="btn-group">
             <button
-              className={`btn ${
+              type="button"
+              className={`btn btn-sm ${
                 statusFilter === "add_val"
                   ? "btn-success"
                   : "btn-outline-success"
               }`}
-              onClick={() => handleFilterChange("add_val")}
+              onClick={() =>
+                handleFilterChange("add_val")
+              }
             >
               Credited
             </button>
 
             <button
-              className={`btn ${
+              type="button"
+              className={`btn btn-sm ${
                 statusFilter === "less_val"
                   ? "btn-danger"
                   : "btn-outline-danger"
               }`}
-              onClick={() => handleFilterChange("less_val")}
+              onClick={() =>
+                handleFilterChange("less_val")
+              }
             >
               Debited
             </button>
           </div>
         </div>
-        
+
         <div className="card-body">
-          {/* Desktop Table */}
-          <div className="table-responsive d-none d-md-block">
+          <div className="table-responsive">
             <table className="table table-hover align-middle">
               <thead>
                 <tr>
                   <th>#</th>
                   <th>User</th>
-                  <th>Pre Amount</th>
-                  <th>Cr Amount</th>
+                  <th>preAmount</th>
+                  <th>crAmount</th>
                   <th>Process Amount</th>
                   <th>Type</th>
                   <th>Status</th>
@@ -120,7 +127,10 @@ function TradeSettlements() {
               <tbody>
                 {loading && (
                   <tr>
-                    <td colSpan={8} className="text-center py-4">
+                    <td
+                      colSpan={8}
+                      className="text-center py-4"
+                    >
                       <div className="spinner-border spinner-border-sm me-2" />
                       Loading...
                     </td>
@@ -128,131 +138,89 @@ function TradeSettlements() {
                 )}
 
                 {!loading &&
-                  deposits?.map((item: any, index: number) => (
-                    <tr key={item._id}>
-                      <td>{index + 1}</td>
+                  deposits?.map(
+                    (
+                      item: any,
+                      index: number
+                    ) => (
+                      <tr key={item._id}>
+                        <td>{index + 1}</td>
 
-                      <td>
-                        {item?.userId?.firstName} {item?.userId?.lastName}
-                      </td>
-
-                      <td>${item.preAmount}</td>
-                      <td>${item.crAmount}</td>
-
-                      <td>
-                        <span
-                          className={
-                            item.payType === "add_val"
-                              ? "text-success fw-semibold"
-                              : "text-danger fw-semibold"
+                        <td>
+                          {
+                            item?.userId
+                              ?.firstName
+                          }{" "}
+                          {
+                            item?.userId
+                              ?.lastName
                           }
-                        >
-                          ${item.processAmount}
-                        </span>
-                      </td>
+                        </td>
 
-                      <td>
-                        {item.payType === "add_val" ? (
-                          <span className="text-success fw-semibold">Credit</span>
-                        ) : (
-                          <span className="text-danger fw-semibold">Debit</span>
-                        )}
-                      </td>
+                        
+                        <td className="fw-semibold">
+                          ${item.preAmount}
+                        </td>
+                        <td className="fw-semibold">
+                          ${item.crAmount}
+                        </td>
+                        <td className="fw-semibold">
+                          ${item.payType === "add_val" ? (
+                            <span className="text-success">{item.processAmount}</span>
+                          ):(<span className="text-danger">{item.processAmount}</span> )}
+                        </td>
+                        <td>
+                          {item.payType ===
+                          "add_val" ? (
+                            <span className="text-success fw-semibold">
+                              Credit
+                            </span>
+                          ) : (
+                            <span className="text-danger fw-semibold">
+                              Debit
+                            </span>
+                          )}
+                        </td>
 
-                      <td>{renderStatus(item.payType)}</td>
+                        <td>
+                          {renderStatus(
+                            item.payType
+                          )}
+                        </td>
 
-                      <td>
-                        {new Date(item.createdAt).toLocaleString("en-IN", {
-                          day: "2-digit",
-                          month: "short",
-                          year: "numeric",
-                          hour: "2-digit",
-                          minute: "2-digit",
-                        })}
+                        <td>
+                          {new Date(
+                            item.createdAt
+                          ).toLocaleString(
+                            "en-IN",
+                            {
+                              day: "2-digit",
+                              month: "short",
+                              year: "numeric",
+                              hour: "2-digit",
+                              minute:
+                                "2-digit",
+                            }
+                          )}
+                        </td>
+                      </tr>
+                    )
+                  )}
+
+                {!loading &&
+                  deposits?.length ===
+                    0 && (
+                    <tr>
+                      <td
+                        colSpan={8}
+                        className="text-center text-muted py-4"
+                      >
+                        No settlements found
                       </td>
                     </tr>
-                  ))}
+                  )}
               </tbody>
             </table>
-          </div>
-
-          {/* Mobile Cards */}
-          <div className="d-md-none">
-            {loading && (
-              <div className="text-center py-4">
-                <div className="spinner-border spinner-border-sm me-2" />
-                Loading...
-              </div>
-            )}
-
-            {!loading &&
-              deposits?.map((item: any, index: number) => (
-                <div className="card shadow-sm mb-3" key={item._id}>
-                  <div className="card-body">
-
-                    <div className="d-flex justify-content-between mb-2">
-                      <strong>#{index + 1}</strong>
-                      {renderStatus(item.payType)}
-                    </div>
-
-                    <p className="mb-1">
-                      <strong>User:</strong>{" "}
-                      {item?.userId?.firstName} {item?.userId?.lastName}
-                    </p>
-
-                    <p className="mb-1">
-                      <strong>Pre Amount:</strong> ${item.preAmount}
-                    </p>
-
-                    <p className="mb-1">
-                      <strong>Cr Amount:</strong> ${item.crAmount}
-                    </p>
-
-                    <p className="mb-1">
-                      <strong>Process Amount:</strong>{" "}
-                      <span
-                        className={
-                          item.payType === "add_val"
-                            ? "text-success fw-semibold"
-                            : "text-danger fw-semibold"
-                        }
-                      >
-                        ${item.processAmount}
-                      </span>
-                    </p>
-
-                    <p className="mb-1">
-                      <strong>Type:</strong>{" "}
-                      <span
-                        className={
-                          item.payType === "add_val"
-                            ? "text-success fw-semibold"
-                            : "text-danger fw-semibold"
-                        }
-                      >
-                        {item.payType === "add_val" ? "Credit" : "Debit"}
-                      </span>
-                    </p>
-
-                    <p className="mb-0">
-                      <strong>Date:</strong>{" "}
-                      {new Date(item.createdAt).toLocaleString("en-IN", {
-                        day: "2-digit",
-                        month: "short",
-                        year: "numeric",
-                        hour: "2-digit",
-                        minute: "2-digit",
-                      })}
-                    </p>
-                  </div>
-                </div>
-              ))}
-
-            {!loading && deposits?.length === 0 && (
-              <div className="text-center text-muted py-4">
-                No settlements found
-              </div>
-            )}
           </div>
         </div>
       </div>
