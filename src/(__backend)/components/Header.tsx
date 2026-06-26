@@ -3,7 +3,7 @@ import { Link, NavLink, useNavigate } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import type { AppDispatch, RootState } from "../../redux/store";
 import { logoutUser } from "../../redux/slice/auth";
-import { getUsdPrice, updateUsdPrice } from "../../redux/slice/currency";
+import { updateUsdPrice } from "../../redux/slice/currency";
 interface HeaderProps {
   sidebarOpen: boolean;
   setSidebarOpen: React.Dispatch<React.SetStateAction<boolean>>;
@@ -41,9 +41,7 @@ useEffect(() => {
   return () => clearTimeout(timer);
 }, [dispatch]);
 
-useEffect(()=>{
-  dispatch(getUsdPrice())
-},[dispatch])
+
 
   return (
     <nav className="navbar navbar-expand navbar-bg">
