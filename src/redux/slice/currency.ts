@@ -48,6 +48,10 @@ const currencySlice = createSlice({
       })
 
       .addCase(updateUsdPrice.fulfilled, (state, action) => {
+        console.log("updateUsdPrice");
+        console.log(action);
+        
+        
         state.loading = false;
         state.currency = action.payload;
       })
@@ -61,6 +65,8 @@ const currencySlice = createSlice({
       })
 
       .addCase(getUsdPrice.fulfilled, (state, action) => {
+         console.log("getUsdPrice");
+        console.log(action);
         state.loading = false;
         state.currency = action.payload;
       })
