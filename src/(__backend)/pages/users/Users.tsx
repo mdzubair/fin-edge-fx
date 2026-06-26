@@ -8,7 +8,9 @@ import { Link } from "react-router-dom";
 import { IMG_URL } from "../../../api/default-data";
 import toast from "react-hot-toast";
 
+
 function Users() {
+  
   const dispatch = useDispatch<AppDispatch>();
 
   const { users, loading } = useSelector(
@@ -94,7 +96,7 @@ const handleDeleteUser = async ( userId: string) => {
 
       <div className="card-body">
         <div className="table-responsive">
-          <table className="table table-striped align-middle">
+          <table className="table table-striped table-hover align-middle text-nowrap">
             <thead>
               <tr>
                 <th>#</th>
@@ -137,8 +139,8 @@ const handleDeleteUser = async ( userId: string) => {
                         }
                         alt={user.firstName}
                         className="rounded-circle"
-                        width="40"
-                        height="40"
+                        width="32"
+                        height="32"
                         style={{ objectFit: "cover" }}
                       />
                     </td>
