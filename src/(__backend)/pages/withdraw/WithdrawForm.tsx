@@ -21,6 +21,9 @@ function WithdrawForm({userId}: WithdrawFormProps) {
   const { loading } = useSelector((state: RootState) => state.withdraw);
   const currency = useSelector((state: RootState) => state.currency);
   const currencyVal =  currency?.currency?.currencyVal || "0"; 
+console.log(currency);
+
+
 
   const {register,handleSubmit,reset, setValue, formState: { errors }, } = useForm<WithdrawFormPayload>({
     resolver: yupResolver(withdrawSchema) as any,
