@@ -1,1 +1,1 @@
-export const IMG_URL = "http://localhost:5050/api/v1/public/";
+export const IMG_URL = "https://fin-edge-fx-api.vercel.app/api/v1/public/";

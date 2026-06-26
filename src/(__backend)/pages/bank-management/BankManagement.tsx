@@ -3,6 +3,7 @@ import type { AppDispatch, RootState } from "../../../redux/store";
 import { useEffect } from "react";
 import { deleteAccountById, fetchAccountByUserId, updateAccountStatus } from "../../../redux/slice/account";
 import BankManagementForm from "./BankManagementForm";
+import { IMG_URL } from "../../../api/default-data";
 
 
 function BankManagement() {
@@ -45,7 +46,7 @@ function BankManagement() {
                         {/* QR Code */}
                         <div className="col-md-3 text-center mb-3 mb-md-0">
                           {account.qr && (
-                            <img src={`https://fin-edge-fx-api.vercel.app/api/v1/public/account/${account.qr}`}
+                            <img src={`${IMG_URL}account/${account.qr}`}
                               alt={account.bankName} className="img-fluid border rounded p-2 bg-white"    style={{ maxWidth: "180px", maxHeight: "180px",}}/>
                           )}
                           <span className={` mt-2 badge rounded-pill border ${account.status == 1 ? "border-success text-success" : "border-danger text-danger" }`}>
