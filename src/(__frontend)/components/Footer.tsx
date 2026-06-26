@@ -23,10 +23,10 @@ const Footer = () => {
           <div className="col-lg-2 col-md-6 mb-4">
             <h6 className="footer-title">Forex Trading</h6>
             <ul className="footer-links list-unstyled">
-              <li><Link to="/accounts-overview">Accounts Overview</Link></li>
-              <li><Link to="/open-account">Open An Account</Link></li>
-              <li><Link to="/launch-web-trader">Launch Web Trader</Link></li>
-              <li><Link to="/cybersecurity-scams">Cybersecurity and Scams</Link></li>
+              <li><Link onClick={()=>window.scrollTo({top:0, behavior:"smooth"})} to="/accounts-overview">Accounts Overview</Link></li>
+              <li><Link onClick={()=>window.scrollTo({top:0, behavior:"smooth"})} to="/open-account">Open An Account</Link></li>
+              <li><Link onClick={()=>window.scrollTo({top:0, behavior:"smooth"})} to="/launch-web-trader">Launch Web Trader</Link></li>
+              <li><Link onClick={()=>window.scrollTo({top:0, behavior:"smooth"})} to="/cybersecurity-scams">Cybersecurity and Scams</Link></li>
             </ul>
           </div>
 
@@ -34,11 +34,11 @@ const Footer = () => {
           <div className="col-lg-3 col-md-6 mb-4">
             <h6 className="footer-title">Trading Specifications</h6>
             <ul className="footer-links list-unstyled">
-              <li><Link to="/spreads-commissions">Spreads and Commissions</Link></li>
-              <li><Link to="/range-of-products">Range of Products</Link></li>
-              <li><Link to="/trading-hours">Trading Hours</Link></li>
-              <li><Link to="/funding">Funding</Link></li>
-              <li><Link to="/withdrawal">Withdrawal</Link></li>
+              <li><Link onClick={()=>window.scrollTo({top:0, behavior:"smooth"})} to="/spreads-commissions">Spreads and Commissions</Link></li>
+              <li><Link onClick={()=>window.scrollTo({top:0, behavior:"smooth"})} to="/range-of-products">Range of Products</Link></li>
+              <li><Link onClick={()=>window.scrollTo({top:0, behavior:"smooth"})} to="/trading-hours">Trading Hours</Link></li>
+              <li><Link onClick={()=>window.scrollTo({top:0, behavior:"smooth"})} to="/funding">Funding</Link></li>
+              <li><Link onClick={()=>window.scrollTo({top:0, behavior:"smooth"})} to="/withdrawal">Withdrawal</Link></li>
             </ul>
           </div>
 
@@ -46,11 +46,11 @@ const Footer = () => {
           <div className="col-lg-3 col-md-6 mb-4">
             <h6 className="footer-title">About FinEdge</h6>
             <ul className="footer-links list-unstyled">
-              <li><Link to="/help-center">Help Center</Link></li>
-              <li><Link to="/">Why FinEdgeFx</Link></li>
-              <li><Link to="/regulation">Regulation</Link></li>
-              <li><Link to="/legal-documents">Legal Documents</Link></li>
-              <li><Link to="/contact-us">Contact Us</Link></li>
+              <li><Link onClick={()=>window.scrollTo({top:0, behavior:"smooth"})} to="/help-center">Help Center</Link></li>
+              <li><Link onClick={()=>window.scrollTo({top:0, behavior:"smooth"})} to="/">Why FinEdgeFx</Link></li>
+              <li><Link onClick={()=>window.scrollTo({top:0, behavior:"smooth"})} to="/regulation">Regulation</Link></li>
+              <li><Link onClick={()=>window.scrollTo({top:0, behavior:"smooth"})} to="/legal-documents">Legal Documents</Link></li>
+              <li><Link onClick={()=>window.scrollTo({top:0, behavior:"smooth"})} to="/contact-us">Contact Us</Link></li>
             </ul>
           </div>
 

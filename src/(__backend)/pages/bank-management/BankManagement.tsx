@@ -45,7 +45,7 @@ function BankManagement() {
                         {/* QR Code */}
                         <div className="col-md-3 text-center mb-3 mb-md-0">
                           {account.qr && (
-                            <img src={`http://localhost:5050/api/v1/public/account/${account.qr}`}
+                            <img src={`https://fin-edge-fx-api.vercel.app/api/v1/public/account/${account.qr}`}
                               alt={account.bankName} className="img-fluid border rounded p-2 bg-white"    style={{ maxWidth: "180px", maxHeight: "180px",}}/>
                           )}
                           <span className={` mt-2 badge rounded-pill border ${account.status == 1 ? "border-success text-success" : "border-danger text-danger" }`}>
