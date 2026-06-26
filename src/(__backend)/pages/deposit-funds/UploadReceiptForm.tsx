@@ -292,7 +292,7 @@ function UploadReceiptForm({
             {/* Amount */}
             
             <div className="col-md-3 mb-3">
-              <label className="form-label"> ₹({currencyVal.toFixed(2)}) </label>
+              <label className="form-label"> ₹({Number(currencyVal || 0).toFixed(2)}) </label>
                <input type="number" min={1} className="form-control" value={rupeeAmount} onChange={handleRupeeChange} placeholder="Enter INR Amount"/>             
             </div>
 

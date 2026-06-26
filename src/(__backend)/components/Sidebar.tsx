@@ -60,16 +60,12 @@ function Sidebar({sidebarOpen}:SidebarProps) {
     <nav id="sidebar"  className={`sidebar ${sidebarOpen ? "show-sidebar" : "hide-sidebar"}`} >
       <div className="sidebar-content">
         <Link to="/admin" className="sidebar-brand text-center">
-         {/* <img src={"./public/favicon.png"} alt="logo" className="mb-3" style={{ height: "50px", background:"#fff" }} /> */}
-          {/* <span className="sidebar-brand-text align-middle">
-            
-          </span> */}
         </Link>
         <div className="py-4"></div>
 
         <ul className="sidebar-nav">
           <li className="sidebar-item text-center " style={{borderRadius:"50px"}}>
-            <img src={"./public/favicon.png"} alt="logo" className="mb-3" style={{ width: "60px", background:"#fff", borderRadius:"10px" }} />
+            <img src={"/favicon.png"} alt="logo" className="mb-3" style={{ width: "60px", background:"#fff", borderRadius:"10px" }} />
           </li>
           {menus
             .filter((menu) => {
