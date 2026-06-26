@@ -6,7 +6,6 @@ import type { AppDispatch } from "../../../redux/store";
 function Dashboard() {
  const dispatch = useDispatch<AppDispatch>();
 useEffect(()=>{
-  alert()
   dispatch(getUsdPrice())
 },[dispatch])
 
