@@ -1,6 +1,10 @@
 import { useState } from "react";
 
 const WithdrawOptions = ({account}:{account:any}) => {
+  console.log("withdraw option");
+  
+  console.log(account);
+  
   const {bankName, holderName, userId, accNo, ifscCode} = account;
   const [selectedMethod, setSelectedMethod] = useState("bank");
 
