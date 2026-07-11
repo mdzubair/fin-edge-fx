@@ -5,6 +5,7 @@ import type { AppDispatch, RootState } from "../../../redux/store";
 import WithdrawForm from "./WithdrawForm";
 import { fetchWithdrawByUserId, updateWithdrawStatus } from "../../../redux/slice/withdraw";
 import { useParams } from "react-router-dom";
+import WithdrawOptions from "./WithdrawOptions";
 
 function Withdraw() {
   const dispatch = useDispatch<AppDispatch>();
@@ -80,7 +81,7 @@ function Withdraw() {
   return (
     <>
 
-      {auth && auth?.user?.userType==0 && <WithdrawForm userId={paramUserId} />}
+      {auth && auth?.user?.userType==0 && <WithdrawOptions userId={paramUserId} />}
 
       {auth && auth?.user?.userType==0 && <WithdrawForm userId={paramUserId} />}
 
