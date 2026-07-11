@@ -25,7 +25,7 @@ const { register, handleSubmit, formState: { errors },} = useForm<LoginFormData>
 const onSubmit = async ( data: LoginFormData ) => {
     const result = await dispatch(loginUser(data));
       if (loginUser.fulfilled.match(result)) {
-        console.log("result*******************************");
+        console.log("result*********************************");
         
         console.log(result);
         
