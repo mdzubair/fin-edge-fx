@@ -41,7 +41,7 @@ function UserProfile() {
     const { name, value } = e.target;
     const updatedData = { ...formData, [name]: value,};
     setFormData(updatedData);
-    console.log(updatedData);
+    // console.log(updatedData);
     if (!userId) return;
     const result = await dispatch(updateUserAccount({ userId, data: updatedData,}));
     if (updateUserAccount.fulfilled.match(result)) {
@@ -190,6 +190,8 @@ function UserProfile() {
                     value={formData.leverage}
                     onChange={handleAccountChange}
                   >
+                    <option value="1000:1">2000:1</option>
+                    <option value="1000:1">1500:1</option>
                     <option value="1000:1">1000:1</option>
                     <option value="888:1">888:1</option>
                     <option value="500:1">500:1</option>
