@@ -1,19 +1,21 @@
 import { yupResolver } from "@hookform/resolvers/yup";
-import { useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
 import { withdrawNewSchema } from "../../../validators";
 import { useDispatch, useSelector } from "react-redux";
 import type { AppDispatch, RootState } from "../../../redux/store";
 import toast from "react-hot-toast";
 import { addWithdraw, fetchWithdrawByUserId } from "../../../redux/slice/withdraw";
-interface Account {
-  _id:string;
-  userId:string;
-  bankName?: string;
-  holderName?: string;
-  accNo?: string;
-  ifscCode?: string;
-}
+import { getSingleAccount } from "../../../redux/slice/account";
+import { useNavigate } from "react-router-dom";
+// interface Account {
+//   _id:string;
+//   userId:string;
+//   bankName?: string;
+//   holderName?: string;
+//   accNo?: string;
+//   ifscCode?: string;
+// }
 
 type WithdrawForm = {
   _id:string;
@@ -22,39 +24,70 @@ type WithdrawForm = {
   payType: string;
 };
 
-interface WithdrawOptionsProps {
-  account: Account | null;
+interface WithdrawFormProps {
+  userId: string;
 }
-
-const WithdrawOptions = ({ account }: WithdrawOptionsProps) => {
+const WithdrawOptions = ({userId}: WithdrawFormProps) => {
+  
   const [terms, setTerms]= useState<boolean>(false)
   const [selectedMethod, setSelectedMethod] = useState("");  
   const [rupeeAmount, setRupeeAmount] = useState<number>(0);
   const currency = useSelector((state: RootState) => state.currency);
   const currencyVal =  currency?.currency?.currencyVal || "0"; 
-  const dispatch = useDispatch<AppDispatch>();
+  const dispatch = useDispatch<AppDispatch>();  
+  const { account,loading: accountLoading, } = useSelector((state: RootState) => state.account);
+  const navigate = useNavigate();
 
-  if (!account) return null;
-  const {_id, bankName = "", holderName = "", accNo = "", ifscCode = "", userId=""} = account;
+  const handleSelectedMethod = async (methodType="onlineBank")=>{
+    try {
+      setSelectedMethod(methodType);
+      await dispatch(getSingleAccount(userId)).unwrap();
+    } catch (error:any) {
+      toast.error(error.message)
+    }
+  }
+
+
+  
+  // const fetchAccount = useCallback(async () => {
+  //   try {
+  //     await dispatch(getSingleAccount(userId)).unwrap();
+  //   } catch (error) {
+  //     console.error(error);
+  //   }
+  // }, [dispatch, userId]);
+
+  // useEffect(() => {
+  //   fetchAccount();
+  // }, [fetchAccount]);
+  
+   useEffect(() => {
+    if (!accountLoading && account === null ) {
+      toast.error( "Your bank details were not found. Please add your bank details before requesting a withdrawal.");
+      navigate("/admin/manage-bank");
+    }
+  }, [ account, accountLoading, navigate,]);
+
   const { register, handleSubmit, reset, setValue, formState: { errors },} = useForm<WithdrawForm>({
     resolver: yupResolver(withdrawNewSchema) as any,
     defaultValues: { amount: 0,},
   });
 
 
-const onSubmit = async (data: WithdrawForm) => {
-  const payload = { ...data, bankId: _id, userId, payType: selectedMethod,};
-  try {
-    await dispatch(addWithdraw(payload)).unwrap();
-    await dispatch(fetchWithdrawByUserId({userId,  status:0})).unwrap();
-    toast.success("Withdrawal request submitted");
-    reset();
-    setRupeeAmount(0);
-    setTerms(false);
-  } catch (error: any) {
-      toast.error(typeof error === "string" ? error : "Failed to submit withdrawal");
-    }
-};
+  const onSubmit = async (data: WithdrawForm) => {
+    if(!account) return;
+    const payload = { ...data, bankId: account?._id, userId, payType: selectedMethod,};
+    try {
+      await dispatch(addWithdraw(payload)).unwrap();
+      await dispatch(fetchWithdrawByUserId({userId,  status:0})).unwrap();
+      toast.success("Withdrawal request submitted");
+      reset();
+      setRupeeAmount(0);
+      setTerms(false);
+    } catch (error: any) {
+        toast.error(typeof error === "string" ? error : "Failed to submit withdrawal");
+      }
+  };
 
   const handleRupeeChange = ( e: React.ChangeEvent<HTMLInputElement>) => {
     const inr = Number(e.target.value) || 0;
@@ -63,6 +96,8 @@ const onSubmit = async (data: WithdrawForm) => {
     setValue("amount", usd, { shouldValidate: true, });
   };
 
+
+  
   return (
     <div className="container-fluid">
       <h4 className="fw-bold mb-3">Select Withdrawal Method</h4>
@@ -75,7 +110,7 @@ const onSubmit = async (data: WithdrawForm) => {
               selectedMethod === "onlineBank" ? "border-primary border-3" : ""
             }`}
             style={{ cursor: "pointer" }}
-            onClick={() => setSelectedMethod("onlineBank")}
+            onClick={() => handleSelectedMethod("onlineBank")}
           >
             <div className="card-body text-center">
               <i className="fas fa-university fa-3x text-primary mb-3"></i>
@@ -95,7 +130,7 @@ const onSubmit = async (data: WithdrawForm) => {
               selectedMethod === "binance" ? "border-primary border-3" : "border bg-light position-relative"
             }`}
             style={{ cursor: "pointer" }}
-            onClick={() => setSelectedMethod("binance")}>
+            onClick={() => handleSelectedMethod("binance")}>
             <span className="position-absolute top-0 end-0 m-2">
               <i className="fas fa-lock text-danger"></i>
             </span>
@@ -122,7 +157,7 @@ const onSubmit = async (data: WithdrawForm) => {
               selectedMethod === "cryptocurrency" ? "border-primary border-3" : "border bg-light position-relative"
             }`}
             style={{ cursor: "pointer" }}
-            onClick={() => setSelectedMethod("cryptocurrency")}>
+            onClick={() => handleSelectedMethod("cryptocurrency")}>
             <span className="position-absolute top-0 end-0 m-2">
               <i className="fas fa-lock text-danger"></i>
             </span>
@@ -155,22 +190,22 @@ const onSubmit = async (data: WithdrawForm) => {
             <div className="row g-3">
               <div className="col-md-4">
                 <label className="form-label">Account Holder Name</label>
-                <input type="text" className="form-control" value={holderName} readOnly/>
+                <input type="text" className="form-control" value={account?.holderName} readOnly/>
               </div>
 
               <div className="col-md-4">
                 <label className="form-label">Bank Name</label>
-                <input type="text" className="form-control" value={bankName} readOnly/>
+                <input type="text" className="form-control" value={account?.bankName} readOnly/>
               </div>
 
               <div className="col-md-4">
                 <label className="form-label">Account Number</label>
-                <input type="text" className="form-control" value={accNo} readOnly/>
+                <input type="text" className="form-control" value={account?.accNo} readOnly/>
               </div>
 
               <div className="col-md-4">
                 <label className="form-label">IFSC / SWIFT Code</label>
-                <input type="text" className="form-control" value={ifscCode} readOnly/>
+                <input type="text" className="form-control" value={account?.ifscCode} readOnly/>
               </div>
 
               <div className="col-md-4">
