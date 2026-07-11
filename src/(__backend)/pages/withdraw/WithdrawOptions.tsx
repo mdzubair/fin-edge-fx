@@ -64,6 +64,9 @@ const handleSelectedMethod = useCallback(async (methodType: string) => {
 
 
 const onSubmit = async (data: WithdrawForm) => {
+  console.log(data);
+  console.log(account);
+  
   if (!account) return;
 
   const payload = {
