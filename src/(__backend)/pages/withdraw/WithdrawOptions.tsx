@@ -1,7 +1,7 @@
 import { yupResolver } from "@hookform/resolvers/yup";
 import { useState } from "react";
 import { useForm } from "react-hook-form";
-import { withdrawNewSchema, withdrawSchema } from "../../../validators";
+import { withdrawNewSchema } from "../../../validators";
 import { useSelector } from "react-redux";
 import type { RootState } from "../../../redux/store";
 interface Account {
@@ -36,6 +36,29 @@ const { register, handleSubmit, reset, setValue, formState: { errors },} = useFo
   defaultValues: { payType: "onlineBank", amount: 0,},
 });
 
+
+const onSubmit = async (data: WithdrawForm) => {
+  const payload: any = {...data, payType: selectedMethod, };
+
+  console.log(payload);
+
+  /*
+  try {
+      await dispatch(createWithdraw(payload)).unwrap();
+      toast.success("Withdrawal request submitted");
+
+      reset({
+          payType: selectedMethod,
+          amount:0
+      });
+
+      setRupeeAmount(0);
+
+  } catch(error:any){
+      toast.error(error);
+  }
+  */
+};
 
   const handleRupeeChange = ( e: React.ChangeEvent<HTMLInputElement>) => {
     const inr = Number(e.target.value) || 0;
