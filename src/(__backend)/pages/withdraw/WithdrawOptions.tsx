@@ -41,7 +41,7 @@ const WithdrawOptions = ({userId}: WithdrawFormProps) => {
 
   const { register, handleSubmit, reset, setValue, formState: { errors },} = useForm<WithdrawForm>({
     resolver: yupResolver(withdrawNewSchema) as any,
-    defaultValues: { amount: 0, payType:selectedMethod},
+    defaultValues: { amount: 0,},
   });
 
 const handleSelectedMethod = useCallback(async (methodType: string) => {
@@ -63,7 +63,7 @@ const handleSelectedMethod = useCallback(async (methodType: string) => {
 );
 
 
-const onSubmit = async (data: WithdrawForm) => {
+const onSubmit = async (data: any) => {
   console.log(data);
   console.log(account);
   
