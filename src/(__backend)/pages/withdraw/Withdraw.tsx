@@ -101,9 +101,17 @@ function Withdraw() {
         </div>
     );
 }
-  useEffect(()=>{
-    dispatch(getSingleAccount(paramUserId))
-  }, [dispatch, paramUserId])
+const fetchAcc = useCallback(async () => {
+  try {
+    await dispatch(getSingleAccount(paramUserId)).unwrap();
+  } catch (error) {
+    console.error(error);
+  }
+}, [dispatch, paramUserId]);
+
+useEffect(() => {
+  fetchAcc();
+}, [fetchAcc]);
 
   const navigate = useNavigate();
   useEffect(() => {
