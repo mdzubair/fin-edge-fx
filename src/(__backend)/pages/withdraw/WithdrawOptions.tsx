@@ -18,8 +18,8 @@ import { useNavigate } from "react-router-dom";
 // }
 
 type WithdrawForm = {
-  _id:string;
   userId: string;
+  bankId: string;
   amount: number;
   payType: string;
 };
