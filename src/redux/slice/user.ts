@@ -150,6 +150,21 @@ export const deleteUser = createAsyncThunk< UserResponse, string, { rejectValue:
 );
 
 
+
+
+export const updateUserAccount = createAsyncThunk("user/updateUserAccount", async ({ userId, data }: { userId: string; data: any }, { rejectWithValue }) => {
+    try {
+      const response = await userAPI.updateUserAccount(userId, data);
+      return response;
+    } catch (error: any) {
+      return rejectWithValue(
+        error?.response?.data?.message || "Failed to update account"
+      );
+    }
+  }
+);
+
+
 const userSlice = createSlice({
   name: "user",
   initialState,

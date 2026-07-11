@@ -5,7 +5,7 @@
 export enum UserType { USER = 0, ADMIN = 1, }
 export enum UserStatus { ACTIVE = 1, BLOCKED = 2, UNVERIFIED = 3, }
 export interface UserData {
-     _id?: string; accType: string; wallet: number; appPass?: string; userType?: UserType; status?: UserStatus; profile?: string; doc?: string; upi?: string; firstName: string; lastName: string; email: string; username: string; password: string; dob?: Date; phone: string; address:string; zip:string; city?: string; state?: string; country?: string; app_username?: string; app_password?: string; firstDeposit?: number; createdAt?: Date; updatedAt?: Date;
+     _id?: string; accType: string; leverage:string, wallet: number; appPass?: string; userType?: UserType; status?: UserStatus; profile?: string; doc?: string; upi?: string; firstName: string; lastName: string; email: string; username: string; password: string; dob?: Date; phone: string; address:string; zip:string; city?: string; state?: string; country?: string; app_username?: string; app_password?: string; firstDeposit?: number; createdAt?: Date; updatedAt?: Date;
 }
 
 
