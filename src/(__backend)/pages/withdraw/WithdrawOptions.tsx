@@ -30,7 +30,7 @@ interface WithdrawFormProps {
 const WithdrawOptions = ({userId}: WithdrawFormProps) => {
 
   const [terms, setTerms] = useState(false);
-  const [selectedMethod, setSelectedMethod] = useState("onlineBank");
+  const [selectedMethod, setSelectedMethod] = useState("");
   const [rupeeAmount, setRupeeAmount] = useState(0);
   const dispatch = useDispatch<AppDispatch>();
   const navigate = useNavigate();
@@ -44,8 +44,7 @@ const WithdrawOptions = ({userId}: WithdrawFormProps) => {
     defaultValues: { amount: 0,},
   });
 
-const handleSelectedMethod = useCallback(
-  async (methodType: string) => {
+const handleSelectedMethod = useCallback(async (methodType: string) => {
     try {
       setSelectedMethod(methodType);
       await dispatch(getSingleAccount(userId)).unwrap();
@@ -57,6 +56,8 @@ const handleSelectedMethod = useCallback(
 );
 
 useEffect(() => {
+  console.log(account);
+  
   if (!accountLoading && !account) {
     toast.error(
       "Your bank details were not found. Please add your bank details before requesting a withdrawal."
