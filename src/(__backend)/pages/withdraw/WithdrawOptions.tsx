@@ -5,6 +5,7 @@ import { withdrawNewSchema } from "../../../validators";
 import { useSelector } from "react-redux";
 import type { RootState } from "../../../redux/store";
 interface Account {
+  _id:string;
   bankName?: string;
   holderName?: string;
   accNo?: string;
@@ -12,6 +13,7 @@ interface Account {
 }
 
 type WithdrawForm = {
+  _id:string;
   userId: string;
   amount: number;
   payType: string;
@@ -30,7 +32,7 @@ const WithdrawOptions = ({ account }: WithdrawOptionsProps) => {
 
   if (!account) return null;
 
-  const { bankName = "", holderName = "", accNo = "", ifscCode = "",} = account;
+  const {_id, bankName = "", holderName = "", accNo = "", ifscCode = "",} = account;
   
 const { register, handleSubmit, reset, setValue, formState: { errors },} = useForm<WithdrawForm>({
   resolver: yupResolver(withdrawNewSchema) as any,
@@ -39,7 +41,7 @@ const { register, handleSubmit, reset, setValue, formState: { errors },} = useFo
 
 
 const onSubmit = async (data: WithdrawForm) => {
-  const payload: any = {...data, payType: selectedMethod, };
+  const payload: any = [{...data, payType: selectedMethod, }, {...data, bankId: _id, }];
 
   console.log(payload);
 
