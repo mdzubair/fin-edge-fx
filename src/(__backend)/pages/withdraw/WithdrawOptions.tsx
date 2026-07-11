@@ -28,7 +28,7 @@ interface WithdrawOptionsProps {
 
 const WithdrawOptions = ({ account }: WithdrawOptionsProps) => {
   const [terms, setTerms]= useState<boolean>(false)
-  const [selectedMethod, setSelectedMethod] = useState("onlineBank");  
+  const [selectedMethod, setSelectedMethod] = useState("");  
   const [rupeeAmount, setRupeeAmount] = useState<number>(0);
   const currency = useSelector((state: RootState) => state.currency);
   const currencyVal =  currency?.currency?.currencyVal || "0"; 
@@ -38,7 +38,7 @@ const WithdrawOptions = ({ account }: WithdrawOptionsProps) => {
   const {_id, bankName = "", holderName = "", accNo = "", ifscCode = "", userId=""} = account;
   const { register, handleSubmit, reset, setValue, formState: { errors },} = useForm<WithdrawForm>({
     resolver: yupResolver(withdrawNewSchema) as any,
-    defaultValues: { payType: "onlineBank", amount: 0,},
+    defaultValues: { amount: 0,},
   });
 
 
