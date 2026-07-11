@@ -1,6 +1,7 @@
 import { useState } from "react";
 
-const WithdrawOptions = () => {
+const WithdrawOptions = ({account}:{account:any}) => {
+  const {bankName, holderName, userId, accNo, ifscCode} = account;
   const [selectedMethod, setSelectedMethod] = useState("bank");
 
   return (
@@ -107,55 +108,27 @@ const WithdrawOptions = () => {
                   Account Holder Name
                 </label>
 
-                <input
-                  type="text"
-                  className="form-control"
-                  placeholder="John Doe"
-                />
+                <input type="text" className="form-control" placeholder="John Doe" value={holderName}/>
               </div>
 
               <div className="col-md-6">
-                <label className="form-label">
-                  Bank Name
-                </label>
-
-                <input
-                  type="text"
-                  className="form-control"
-                />
+                <label className="form-label">Bank Name</label>
+                <input type="text" className="form-control" value={bankName} readOnly/>
               </div>
 
               <div className="col-md-6">
-                <label className="form-label">
-                  Account Number
-                </label>
-
-                <input
-                  type="text"
-                  className="form-control"
-                />
+                <label className="form-label">Account Number</label>
+                <input type="text" className="form-control" value={accNo} readOnly/>
               </div>
 
               <div className="col-md-6">
-                <label className="form-label">
-                  IFSC / SWIFT Code
-                </label>
-
-                <input
-                  type="text"
-                  className="form-control"
-                />
+                <label className="form-label"> IFSC / SWIFT Code</label>
+                <input type="text" className="form-control" value={ifscCode} readOnly/>
               </div>
 
               <div className="col-md-6">
-                <label className="form-label">
-                  Withdrawal Amount
-                </label>
-
-                <input
-                  type="number"
-                  className="form-control"
-                />
+                <label className="form-label">Withdrawal Amount</label>
+                <input type="number" className="form-control" />
               </div>
 
               <div className="col-12">

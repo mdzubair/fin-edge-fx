@@ -431,7 +431,7 @@ function Withdraw() {
         auth?.user?.userType === 0 &&
         account && (
           <>
-            <WithdrawOptions />
+            <WithdrawOptions account={account}/>
             <WithdrawForm userId={paramUserId} />
           </>
         )}
