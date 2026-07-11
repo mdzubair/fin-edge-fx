@@ -113,6 +113,7 @@ function Withdraw() {
     }
   }, [account, auth?.user?.userType, navigate]);
     
+console.log(account);
 
   return (
     <>
