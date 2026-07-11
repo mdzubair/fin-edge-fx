@@ -42,6 +42,8 @@ const onSubmit = async (data: WithdrawForm) => {
 
   console.log(payload);
 
+      reset();
+      setRupeeAmount(0);
   /*
   try {
       await dispatch(createWithdraw(payload)).unwrap();
@@ -149,6 +151,7 @@ const onSubmit = async (data: WithdrawForm) => {
       </div>
 
       {selectedMethod === "onlineBank" && (
+        <form onSubmit={handleSubmit(onSubmit)}>
         <div className="card shadow-sm mt-5">
           <div className="card-header">
             <h5 className="mb-0">Bank Withdrawal Details</h5>
@@ -198,6 +201,7 @@ const onSubmit = async (data: WithdrawForm) => {
             </div>
           </div>
         </div>
+        </form>
       )}
     </div>
   );
