@@ -97,7 +97,8 @@ export const initialAccountState: InitAccountData = {
 // ==========================================
 // Withdraw
 // ==========================================
-export interface WithdrawFormPayload { userId:string; amount:number; payType:string;}
+// export interface WithdrawFormPayload { userId:string; amount:number; payType:string;}
+export interface WithdrawFormPayload { userId:string; bankId:string; amount:number; payType:string;}
 export enum WithdrawPayType { BANK = "India local banks", PAYPAL = "PayPal", PAYTM = "PAYTM", STRIPE = "Stripe", RAZORPAY = "Razorpay", }
 export enum WithdrawStatus { PENDING = 0, COMPLETE = 1, REJECT = 2, }
 export interface WithdrawData { _id?: string; userId: string; amount: number; balance: number; payType: string; status?: WithdrawStatus; createdAt?: Date; updatedAt?: Date; }

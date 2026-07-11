@@ -43,6 +43,17 @@ export const getSingleWithdraw = createAsyncThunk<WithdrawResponse,string,{ reje
   }
 );
 
+// export const addWithdraw = createAsyncThunk<WithdrawResponse, WithdrawFormPayload, { rejectValue: string }>(
+//   "withdraw/add",  async (data, { rejectWithValue }) => {
+//     try {
+//       return await withdrawApi.store(data);
+//     } catch (error: any) {
+//        return rejectWithValue( error?.response?.data?.message || error?.message || "Failed to fetch withdraw details");
+//     }
+//   }
+// );
+
+
 export const addWithdraw = createAsyncThunk<WithdrawResponse, WithdrawFormPayload, { rejectValue: string }>(
   "withdraw/add",  async (data, { rejectWithValue }) => {
     try {

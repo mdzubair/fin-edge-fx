@@ -2,8 +2,10 @@ import { yupResolver } from "@hookform/resolvers/yup";
 import { useState } from "react";
 import { useForm } from "react-hook-form";
 import { withdrawNewSchema } from "../../../validators";
-import { useSelector } from "react-redux";
-import type { RootState } from "../../../redux/store";
+import { useDispatch, useSelector } from "react-redux";
+import type { AppDispatch, RootState } from "../../../redux/store";
+import toast from "react-hot-toast";
+import { addWithdraw } from "../../../redux/slice/withdraw";
 interface Account {
   _id:string;
   userId:string;
@@ -30,6 +32,7 @@ const WithdrawOptions = ({ account }: WithdrawOptionsProps) => {
   const [rupeeAmount, setRupeeAmount] = useState<number>(0);
   const currency = useSelector((state: RootState) => state.currency);
   const currencyVal =  currency?.currency?.currencyVal || "0"; 
+  const dispatch = useDispatch<AppDispatch>();
 
   if (!account) return null;
 
@@ -44,25 +47,25 @@ const { register, handleSubmit, reset, setValue, formState: { errors },} = useFo
 const onSubmit = async (data: WithdrawForm) => {
   const payload = { ...data, bankId: _id, userId, payType: selectedMethod,};
   console.log(payload);
-  reset();
-  setRupeeAmount(0);
-    setTerms(false);
-  /*
+ 
+ 
   try {
-      await dispatch(createWithdraw(payload)).unwrap();
+      await dispatch(addWithdraw(payload)).unwrap();
       toast.success("Withdrawal request submitted");
 
-      reset({
-          payType: selectedMethod,
-          amount:0
-      });
+      // reset({payType: selectedMethod,amount:0
+      // });
+    reset();
+    setRupeeAmount(0);
+    setTerms(false);
 
-      setRupeeAmount(0);
-
-  } catch(error:any){
-      toast.error(error);
-  }
-  */
+  } catch (error: any) {
+      toast.error(
+        typeof error === "string"
+          ? error
+          : "Failed to submit withdrawal"
+      );
+    }
 };
 
   const handleRupeeChange = ( e: React.ChangeEvent<HTMLInputElement>) => {
