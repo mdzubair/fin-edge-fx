@@ -4,8 +4,9 @@ import toast from "react-hot-toast";
 import type { AppDispatch, RootState } from "../../../redux/store";
 import WithdrawForm from "./WithdrawForm";
 import { fetchWithdrawByUserId, updateWithdrawStatus } from "../../../redux/slice/withdraw";
-import { useParams } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import WithdrawOptions from "./WithdrawOptions";
+import { getSingleAccount } from "../../../redux/slice/account";
 
 function Withdraw() {
   const dispatch = useDispatch<AppDispatch>();
@@ -15,40 +16,15 @@ function Withdraw() {
   const { withdraws, loading } = useSelector(
     (state: RootState) => state.withdraw
   );
-
-  // const USER_ID = paramUserId;
-
+// const [updatingId, setUpdatingId] = useState("");
   const [statusFilter, setStatusFilter] = useState(0);
-
-  const fetchWithdraw = useCallback(
-    async (status: number) => {
-      try {
-        await dispatch(fetchWithdrawByUserId({userId: paramUserId, status})).unwrap();
-      } catch (error: any) {
-        toast.error(
-          error || "Failed to fetch withdraw list"
-        );
-      }
-    },
-    [dispatch]
-  );
-
-  useEffect(() => {
-    fetchWithdraw(statusFilter);
-  }, [fetchWithdraw, statusFilter]);
-
-  const handleFilterChange = (
-    status: number
-  ) => {
-    setStatusFilter(status);
-  };
 
   const renderStatus = (status: number) => {
     switch (status) {
       case 1:
         return (
           <span className="badge rounded-pill border border-success text-success">
-            Comepleted
+            Completed
           </span>
         );
 
@@ -68,22 +44,85 @@ function Withdraw() {
     }
   };
 
-  
-    const changeWithdrawStatus = async (rowId: string,status: number) => {
+    
+  const fetchWithdraw = useCallback(
+    async (status: number) => {
       try {
-        await dispatch(updateWithdrawStatus({ rowId, status})).unwrap();  
-        await fetchWithdraw(statusFilter);
-      } catch (error) {
-        console.error("Failed to update status:", error);
+        await dispatch(fetchWithdrawByUserId({userId: paramUserId, status})).unwrap();
+      } catch (error: any) {
+        toast.error(
+          error || "Failed to fetch withdraw list"
+        );
+      }
+    },
+    [dispatch, paramUserId]
+  );
+
+  useEffect(() => {
+    fetchWithdraw(statusFilter);
+  }, [fetchWithdraw, statusFilter]);
+
+  const handleFilterChange = (
+    status: number
+  ) => {
+    setStatusFilter(status);
+  };
+
+    // const changeWithdrawStatus = async (rowId: string,status: number) => {
+    //   try {
+    //     await dispatch(updateWithdrawStatus({ rowId, status})).unwrap();  
+    //     await fetchWithdraw(statusFilter);
+    //   } catch (error) {
+    //     console.error("Failed to update status:", error);
+    //   }
+    // };
+
+
+    const changeWithdrawStatus = async ( rowId: string, status: number) => {
+      try {
+        // setUpdatingId(rowId);
+        await dispatch(updateWithdrawStatus({ rowId, status,})).unwrap();
+        toast.success("Status updated successfully");
+        fetchWithdraw(statusFilter);
+      } catch (error: any) {
+        toast.error(error || "Unable to update status");
+      } finally {
+        // setUpdatingId("");
       }
     };
+
+    
+  // const { account } = useSelector((state:RootState)=>state.account);
+  const { account, loading: accountLoading } = useSelector((state: RootState) => state.account);
+  if (accountLoading) {
+    return (
+        <div className="text-center py-5">
+            <div className="spinner-border" />
+        </div>
+    );
+}
+  useEffect(()=>{
+    dispatch(getSingleAccount(paramUserId))
+  }, [dispatch, paramUserId])
+
+  const navigate = useNavigate();
+  useEffect(() => {
+    if (auth?.user?.userType === 0 && account === null) {
+      toast.error("Your bank details were not found. Please add your bank details before requesting a withdrawal.");
+      navigate("/admin/manage-bank");
+    }
+  }, [account, auth?.user?.userType, navigate]);
+    
 
   return (
     <>
 
-      {auth && auth?.user?.userType==0 && <WithdrawOptions />}
-
-      {auth && auth?.user?.userType==0 && <WithdrawForm userId={paramUserId} />}
+      {auth?.user?.userType === 0 && account && (
+            <>
+                <WithdrawOptions />
+                <WithdrawForm userId={paramUserId} />
+            </>
+        )}
 
       <div className="card mt-4 shadow-sm border-0">
         <div className="card-header d-flex justify-content-between align-items-center flex-wrap gap-2">
