@@ -1,5 +1,5 @@
 import { yupResolver } from "@hookform/resolvers/yup";
-import { useEffect, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
 import { withdrawNewSchema } from "../../../validators";
 import { useDispatch, useSelector } from "react-redux";
@@ -38,14 +38,14 @@ const WithdrawOptions = ({userId}: WithdrawFormProps) => {
   const { account,loading: accountLoading, } = useSelector((state: RootState) => state.account);
   const navigate = useNavigate();
 
-  const handleSelectedMethod = async (methodType="onlineBank")=>{
+  const handleSelectedMethod = useCallback(async (methodType="onlineBank") => {
     try {
       setSelectedMethod(methodType);
       await dispatch(getSingleAccount(userId)).unwrap();
     } catch (error:any) {
       toast.error(error.message)
     }
-  }
+  }, [dispatch, userId]);
 
 
   
