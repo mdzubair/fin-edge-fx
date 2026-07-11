@@ -31,11 +31,9 @@ export const loginUser = createAsyncThunk<
       const response =  await userAPI.login(data);
       return response.data;
     } catch (error: any) {
-      console.log(error);
-      
-      // return rejectWithValue(
-      //   error?.response?.data?.message || "Login failed"
-      // );
+      return rejectWithValue(
+        error?.response?.data?.message || "Login failed"
+      );
     }
   }
 );

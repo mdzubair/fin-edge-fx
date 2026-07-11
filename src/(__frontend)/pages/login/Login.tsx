@@ -24,20 +24,11 @@ const { register, handleSubmit, formState: { errors },} = useForm<LoginFormData>
 
 const onSubmit = async ( data: LoginFormData ) => {
     const result = await dispatch(loginUser(data));
-    alert(result);
       if (loginUser.fulfilled.match(result)) {
-        // toast.success("Login Successful");
-        // navigate("/admin");
-        alert("alert if");
-        console.log(result);
-        
-
+        toast.success("Login Successful");
+        navigate("/admin");
       } else {
-        alert("alert else");
-        console.log(result.payload);
-        
-        // toast.error(result.payload as string);
-
+        toast.error(result.payload as string);
       }
     };
   return (
