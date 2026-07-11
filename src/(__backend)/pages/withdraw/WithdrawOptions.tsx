@@ -6,6 +6,7 @@ import { useSelector } from "react-redux";
 import type { RootState } from "../../../redux/store";
 interface Account {
   _id:string;
+  userId:string;
   bankName?: string;
   holderName?: string;
   accNo?: string;
@@ -32,7 +33,7 @@ const WithdrawOptions = ({ account }: WithdrawOptionsProps) => {
 
   if (!account) return null;
 
-  const {_id, bankName = "", holderName = "", accNo = "", ifscCode = "",} = account;
+  const {_id, bankName = "", holderName = "", accNo = "", ifscCode = "", userId=""} = account;
   
 const { register, handleSubmit, reset, setValue, formState: { errors },} = useForm<WithdrawForm>({
   resolver: yupResolver(withdrawNewSchema) as any,
@@ -41,12 +42,11 @@ const { register, handleSubmit, reset, setValue, formState: { errors },} = useFo
 
 
 const onSubmit = async (data: WithdrawForm) => {
-  const payload: any = [{...data, payType: selectedMethod, }, {...data, bankId: _id, }];
-
+  const payload = { ...data, bankId: _id, userId, payType: selectedMethod,};
   console.log(payload);
-
-      reset();
-      setRupeeAmount(0);
+  reset();
+  setRupeeAmount(0);
+    setTerms(false);
   /*
   try {
       await dispatch(createWithdraw(payload)).unwrap();
