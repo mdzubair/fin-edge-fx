@@ -41,10 +41,11 @@ const WithdrawOptions = ({userId}: WithdrawFormProps) => {
 
   const { register, handleSubmit, reset, setValue, formState: { errors },} = useForm<WithdrawForm>({
     resolver: yupResolver(withdrawNewSchema) as any,
-    defaultValues: { amount: 0, },
+    defaultValues: { amount: 0, payType:selectedMethod},
   });
 
 const handleSelectedMethod = useCallback(async (methodType: string) => {
+  console.log(methodType);
   
     setSelectedMethod(methodType);
     if (methodType !== "onlineBank") return;
