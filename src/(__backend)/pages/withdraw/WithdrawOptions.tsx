@@ -196,7 +196,7 @@ const onSubmit = async (data: WithdrawForm) => {
 
               <div className="col-12">
                 <div className="col-6">
-                  <input type="checkbox" name="" id="" onChange={(terms)=>setTerms(!terms)}/> I declare the following:
+                  <input type="checkbox" checked={terms} onChange={() => setTerms((prev) => !prev)}/> I declare the following:
                   <ul>
                     <li>The withdrawal details provided above belong to me.</li>
                     <li>I understand that any fund withdrawals from my trading account will result in the proportional removal at my trading bonus.</li>
