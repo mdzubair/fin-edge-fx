@@ -56,7 +56,7 @@ const handleSelectedMethod = useCallback(async (methodType: string) => {
           "Your bank details were not found. Please add your bank details before requesting a withdrawal."
         );
 
-        navigate("/admin/manage-bank");
+        // navigate("/admin/manage-bank");
       }
     } catch (error: any) {
       toast.error(error?.message || "Failed to fetch bank details.");
