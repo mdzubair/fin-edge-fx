@@ -117,7 +117,7 @@ useEffect(() => {
   useEffect(() => {
     if (auth?.user?.userType === 0 && account === null) {
       toast.error("Your bank details were not found. Please add your bank details before requesting a withdrawal.");
-      navigate("/admin/manage-bank");
+      // navigate("/admin/manage-bank");
     }
   }, [account, auth?.user?.userType, navigate]);
     
