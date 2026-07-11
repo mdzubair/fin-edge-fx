@@ -115,7 +115,7 @@ const onSubmit = async (data: WithdrawForm) => {
                 Requires a successful deposit before withdrawal.
               </p>
 
-              <button className="btn btn-outline-secondary" disabled>
+              <button className="btn btn-outline-secondary" >
                 Locked
               </button>
             </div>
@@ -159,33 +159,33 @@ const onSubmit = async (data: WithdrawForm) => {
 
           <div className="card-body">
             <div className="row g-3">
-              <div className="col-md-6">
+              <div className="col-md-4">
                 <label className="form-label">Account Holder Name</label>
                 <input type="text" className="form-control" value={holderName} readOnly/>
               </div>
 
-              <div className="col-md-6">
+              <div className="col-md-4">
                 <label className="form-label">Bank Name</label>
                 <input type="text" className="form-control" value={bankName} readOnly/>
               </div>
 
-              <div className="col-md-6">
+              <div className="col-md-4">
                 <label className="form-label">Account Number</label>
                 <input type="text" className="form-control" value={accNo} readOnly/>
               </div>
 
-              <div className="col-md-6">
+              <div className="col-md-4">
                 <label className="form-label">IFSC / SWIFT Code</label>
                 <input type="text" className="form-control" value={ifscCode} readOnly/>
               </div>
 
-              <div className="col-md-6">
+              <div className="col-md-4">
               <label className="form-label"> ₹({Number(currencyVal || 0).toFixed(2)}) </label>
                <input type="number" min={1} className="form-control" value={rupeeAmount} onChange={handleRupeeChange} placeholder="Enter INR Amount"/>             
             </div>
 
            
-              <div className="col-md-6">
+              <div className="col-md-4">
                 <label className="form-label">Withdrawal Amount</label>                
                 <input type="number" min={100} max={1000} step="1" {...register("amount", { valueAsNumber: true,  })} className={`form-control ${ errors.amount ? "is-invalid" : ""  }`} disabled={true} />
                 {errors.amount && (
