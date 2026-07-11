@@ -79,6 +79,9 @@ function Withdraw() {
 
   return (
     <>
+
+      {auth && auth?.user?.userType==0 && <WithdrawForm userId={paramUserId} />}
+
       {auth && auth?.user?.userType==0 && <WithdrawForm userId={paramUserId} />}
 
       <div className="card mt-4 shadow-sm border-0">

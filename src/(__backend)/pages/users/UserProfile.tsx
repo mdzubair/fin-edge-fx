@@ -204,6 +204,11 @@ function UserProfile() {
                     <option value="25:1">25:1</option>
                     <option value="20:1">20:1</option>
                     <option value="15:1">15:1</option>
+                    <option value="10:1">10:1</option>
+                    <option value="5:1">5:1</option>
+                    <option value="3:1">3:1</option>
+                    <option value="2:1">2:1</option>
+                    <option value="1:1">1:1</option>
                   </select>
                 </div>
 
