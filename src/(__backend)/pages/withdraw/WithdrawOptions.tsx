@@ -1,4 +1,5 @@
-const WithdrawOptions = () => {
+
+const WithdrawOptions = ({userId}:{userId:string;}) => {
   return (
     <div className="row g-4">
       {/* Online Bank Transfer */}
