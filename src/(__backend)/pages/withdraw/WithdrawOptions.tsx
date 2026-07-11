@@ -1,5 +1,9 @@
+import { yupResolver } from "@hookform/resolvers/yup";
 import { useState } from "react";
-
+import { useForm } from "react-hook-form";
+import { withdrawNewSchema, withdrawSchema } from "../../../validators";
+import { useSelector } from "react-redux";
+import type { RootState } from "../../../redux/store";
 interface Account {
   bankName?: string;
   holderName?: string;
@@ -7,21 +11,38 @@ interface Account {
   ifscCode?: string;
 }
 
+type WithdrawForm = {
+  userId: string;
+  amount: number;
+  payType: string;
+};
+
 interface WithdrawOptionsProps {
   account: Account | null;
 }
 
 const WithdrawOptions = ({ account }: WithdrawOptionsProps) => {
-  const [selectedMethod, setSelectedMethod] = useState("bank");
+  const [selectedMethod, setSelectedMethod] = useState("onlineBank");  
+  const [rupeeAmount, setRupeeAmount] = useState<number>(0);
+  const currency = useSelector((state: RootState) => state.currency);
+  const currencyVal =  currency?.currency?.currencyVal || "0"; 
 
   if (!account) return null;
 
-  const {
-    bankName = "",
-    holderName = "",
-    accNo = "",
-    ifscCode = "",
-  } = account;
+  const { bankName = "", holderName = "", accNo = "", ifscCode = "",} = account;
+  
+const { register, handleSubmit, reset, setValue, formState: { errors },} = useForm<WithdrawForm>({
+  resolver: yupResolver(withdrawNewSchema) as any,
+  defaultValues: { payType: "onlineBank", amount: 0,},
+});
+
+
+  const handleRupeeChange = ( e: React.ChangeEvent<HTMLInputElement>) => {
+    const inr = Number(e.target.value) || 0;
+    setRupeeAmount(inr);
+    const usd = Number((inr / currencyVal).toFixed(2));
+    setValue("amount", usd, { shouldValidate: true, });
+  };
 
   return (
     <div className="container-fluid">
@@ -32,10 +53,10 @@ const WithdrawOptions = ({ account }: WithdrawOptionsProps) => {
         <div className="col-md-4">
           <div
             className={`card shadow-sm h-100 border ${
-              selectedMethod === "bank" ? "border-primary border-3" : ""
+              selectedMethod === "onlineBank" ? "border-primary border-3" : ""
             }`}
             style={{ cursor: "pointer" }}
-            onClick={() => setSelectedMethod("bank")}
+            onClick={() => setSelectedMethod("onlineBank")}
           >
             <div className="card-body text-center">
               <i className="fas fa-university fa-3x text-primary mb-3"></i>
@@ -51,7 +72,11 @@ const WithdrawOptions = ({ account }: WithdrawOptionsProps) => {
 
         {/* Binance */}
         <div className="col-md-4">
-          <div className="card shadow-sm h-100 border bg-light position-relative">
+          <div className={`card shadow-sm h-100 border ${
+              selectedMethod === "binance" ? "border-primary border-3" : "border bg-light position-relative"
+            }`}
+            style={{ cursor: "pointer" }}
+            onClick={() => setSelectedMethod("binance")}>
             <span className="position-absolute top-0 end-0 m-2">
               <i className="fas fa-lock text-danger"></i>
             </span>
@@ -74,7 +99,11 @@ const WithdrawOptions = ({ account }: WithdrawOptionsProps) => {
 
         {/* Crypto */}
         <div className="col-md-4">
-          <div className="card shadow-sm h-100 border bg-light position-relative">
+          <div  className={`card shadow-sm h-100 border ${
+              selectedMethod === "cryptocurrency" ? "border-primary border-3" : "border bg-light position-relative"
+            }`}
+            style={{ cursor: "pointer" }}
+            onClick={() => setSelectedMethod("cryptocurrency")}>
             <span className="position-absolute top-0 end-0 m-2">
               <i className="fas fa-lock text-danger"></i>
             </span>
@@ -96,7 +125,7 @@ const WithdrawOptions = ({ account }: WithdrawOptionsProps) => {
         </div>
       </div>
 
-      {selectedMethod === "bank" && (
+      {selectedMethod === "onlineBank" && (
         <div className="card shadow-sm mt-5">
           <div className="card-header">
             <h5 className="mb-0">Bank Withdrawal Details</h5>
@@ -106,51 +135,36 @@ const WithdrawOptions = ({ account }: WithdrawOptionsProps) => {
             <div className="row g-3">
               <div className="col-md-6">
                 <label className="form-label">Account Holder Name</label>
-                <input
-                  type="text"
-                  className="form-control"
-                  value={holderName}
-                  readOnly
-                />
+                <input type="text" className="form-control" value={holderName} readOnly/>
               </div>
 
               <div className="col-md-6">
                 <label className="form-label">Bank Name</label>
-                <input
-                  type="text"
-                  className="form-control"
-                  value={bankName}
-                  readOnly
-                />
+                <input type="text" className="form-control" value={bankName} readOnly/>
               </div>
 
               <div className="col-md-6">
                 <label className="form-label">Account Number</label>
-                <input
-                  type="text"
-                  className="form-control"
-                  value={accNo}
-                  readOnly
-                />
+                <input type="text" className="form-control" value={accNo} readOnly/>
               </div>
 
               <div className="col-md-6">
                 <label className="form-label">IFSC / SWIFT Code</label>
-                <input
-                  type="text"
-                  className="form-control"
-                  value={ifscCode}
-                  readOnly
-                />
+                <input type="text" className="form-control" value={ifscCode} readOnly/>
               </div>
 
               <div className="col-md-6">
-                <label className="form-label">Withdrawal Amount</label>
-                <input
-                  type="number"
-                  className="form-control"
-                  placeholder="Enter amount"
-                />
+              <label className="form-label"> ₹({Number(currencyVal || 0).toFixed(2)}) </label>
+               <input type="number" min={1} className="form-control" value={rupeeAmount} onChange={handleRupeeChange} placeholder="Enter INR Amount"/>             
+            </div>
+
+           
+              <div className="col-md-6">
+                <label className="form-label">Withdrawal Amount</label>                
+                <input type="number" min={100} max={1000} step="1" {...register("amount", { valueAsNumber: true,  })} className={`form-control ${ errors.amount ? "is-invalid" : ""  }`} disabled={true} />
+                {errors.amount && (
+                  <div className="invalid-feedback"> {errors.amount.message}</div>
+                )}
               </div>
 
               <div className="col-12">
