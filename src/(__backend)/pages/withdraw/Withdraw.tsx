@@ -289,7 +289,7 @@ import toast from "react-hot-toast";
 
 import type { AppDispatch, RootState } from "../../../redux/store";
 
-import WithdrawForm from "./WithdrawForm";
+// import WithdrawForm from "./WithdrawForm";
 import WithdrawOptions from "./WithdrawOptions";
 
 import {
@@ -432,7 +432,7 @@ function Withdraw() {
         account && (
           <>
             <WithdrawOptions account={account}/>
-            <WithdrawForm userId={paramUserId} />
+            {/* <WithdrawForm userId={paramUserId} /> */}
           </>
         )}
 

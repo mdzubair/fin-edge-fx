@@ -5,7 +5,7 @@ import { withdrawNewSchema } from "../../../validators";
 import { useDispatch, useSelector } from "react-redux";
 import type { AppDispatch, RootState } from "../../../redux/store";
 import toast from "react-hot-toast";
-import { addWithdraw } from "../../../redux/slice/withdraw";
+import { addWithdraw, fetchWithdrawByUserId } from "../../../redux/slice/withdraw";
 interface Account {
   _id:string;
   userId:string;
@@ -35,36 +35,24 @@ const WithdrawOptions = ({ account }: WithdrawOptionsProps) => {
   const dispatch = useDispatch<AppDispatch>();
 
   if (!account) return null;
-
   const {_id, bankName = "", holderName = "", accNo = "", ifscCode = "", userId=""} = account;
-  
-const { register, handleSubmit, reset, setValue, formState: { errors },} = useForm<WithdrawForm>({
-  resolver: yupResolver(withdrawNewSchema) as any,
-  defaultValues: { payType: "onlineBank", amount: 0,},
-});
+  const { register, handleSubmit, reset, setValue, formState: { errors },} = useForm<WithdrawForm>({
+    resolver: yupResolver(withdrawNewSchema) as any,
+    defaultValues: { payType: "onlineBank", amount: 0,},
+  });
 
 
 const onSubmit = async (data: WithdrawForm) => {
   const payload = { ...data, bankId: _id, userId, payType: selectedMethod,};
-  console.log(payload);
- 
- 
   try {
-      await dispatch(addWithdraw(payload)).unwrap();
-      toast.success("Withdrawal request submitted");
-
-      // reset({payType: selectedMethod,amount:0
-      // });
+    await dispatch(addWithdraw(payload)).unwrap();
+    await dispatch(fetchWithdrawByUserId({userId,  status:0})).unwrap();
+    toast.success("Withdrawal request submitted");
     reset();
     setRupeeAmount(0);
     setTerms(false);
-
   } catch (error: any) {
-      toast.error(
-        typeof error === "string"
-          ? error
-          : "Failed to submit withdrawal"
-      );
+      toast.error(typeof error === "string" ? error : "Failed to submit withdrawal");
     }
 };
 
