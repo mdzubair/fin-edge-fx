@@ -1,5 +1,8 @@
 
-const WithdrawOptions = ({userId}:{userId:string;}) => {
+interface WithdrawFormProps {
+  userId: string;
+}
+const WithdrawOptions = ({userId}: WithdrawFormProps) => {
   return (
     <div className="row g-4">
       {/* Online Bank Transfer */}
@@ -12,7 +15,7 @@ const WithdrawOptions = ({userId}:{userId:string;}) => {
           <div className="card-body text-center">
             <i className="fas fa-university fa-3x text-primary mb-3"></i>
 
-            <h5 className="fw-bold">Online Bank Transfer</h5>
+            <h5 className="fw-bold">Online Bank Transfer {userId}</h5>
 
             <p className="text-muted mb-4">
               Withdraw funds securely to your local or international bank account.
