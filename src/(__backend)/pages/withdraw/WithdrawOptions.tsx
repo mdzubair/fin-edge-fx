@@ -1,34 +1,31 @@
-
-interface WithdrawFormProps {
-  userId: string;
-}
-const WithdrawOptions = ({userId}: WithdrawFormProps) => {
+const WithdrawOptions = () => {
   return (
+    <>
     <div className="row g-4">
       {/* Online Bank Transfer */}
       <div className="col-md-4">
         <div className="card shadow-sm border-0 h-100 position-relative">
           <div className="position-absolute top-0 end-0 m-2">
-            <i className="fas fa-lock text-danger fs-5"></i>
+            {/* <i className="fas fa-lock text-danger fs-5"></i> */}
           </div>
 
           <div className="card-body text-center">
             <i className="fas fa-university fa-3x text-primary mb-3"></i>
 
-            <h5 className="fw-bold">Online Bank Transfer {userId}</h5>
+            <h5 className="fw-bold">Online Bank Transfer</h5>
 
             <p className="text-muted mb-4">
               Withdraw funds securely to your local or international bank account.
             </p>
-
-            <button className="btn btn-secondary w-100" disabled>
-              <i className="fas fa-lock me-2"></i>
-              Coming Soon
-            </button>
           </div>
         </div>
       </div>
-
+    </div>
+    <div className="row g-4">
+        <h5 className="fw-bold">Disabled Method</h5>
+        <p className="text-muted mb-4">
+           A diposit is required befor you can use this method to Withdraw your funds.
+        </p>
       {/* Binance Pay */}
       <div className="col-md-4">
         <div className="card shadow-sm border-0 h-100 position-relative">
@@ -44,11 +41,6 @@ const WithdrawOptions = ({userId}: WithdrawFormProps) => {
             <p className="text-muted mb-4">
               Withdraw your funds directly to your Binance Pay wallet.
             </p>
-
-            <button className="btn btn-secondary w-100" disabled>
-              <i className="fas fa-lock me-2"></i>
-              Coming Soon
-            </button>
           </div>
         </div>
       </div>
@@ -68,15 +60,11 @@ const WithdrawOptions = ({userId}: WithdrawFormProps) => {
             <p className="text-muted mb-4">
               Withdraw using Bitcoin, Ethereum, USDT, and other supported cryptocurrencies.
             </p>
-
-            <button className="btn btn-secondary w-100" disabled>
-              <i className="fas fa-lock me-2"></i>
-              Coming Soon
-            </button>
           </div>
         </div>
       </div>
     </div>
+    </>
   );
 };
 

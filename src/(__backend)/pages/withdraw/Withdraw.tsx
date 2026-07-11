@@ -81,7 +81,7 @@ function Withdraw() {
   return (
     <>
 
-      {auth && auth?.user?.userType==0 && <WithdrawOptions userId={paramUserId} />}
+      {auth && auth?.user?.userType==0 && <WithdrawOptions />}
 
       {auth && auth?.user?.userType==0 && <WithdrawForm userId={paramUserId} />}
 
