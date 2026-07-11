@@ -1,5 +1,5 @@
 import { yupResolver } from "@hookform/resolvers/yup";
-import { useCallback, useEffect, useState } from "react";
+import { useCallback, useState } from "react";
 import { useForm } from "react-hook-form";
 import { withdrawNewSchema } from "../../../validators";
 import { useDispatch, useSelector } from "react-redux";
@@ -48,24 +48,20 @@ const handleSelectedMethod = useCallback(async (methodType: string) => {
     try {
       setSelectedMethod(methodType);
       await dispatch(getSingleAccount(userId)).unwrap();
+       if (!accountLoading && !account) {
+        toast.error(
+          "Your bank details were not found. Please add your bank details before requesting a withdrawal."
+        );
+
+        navigate("/admin/manage-bank");
+      }
     } catch (error: any) {
       toast.error(error?.message || "Failed to fetch bank details.");
     }
   },
-  [dispatch, userId]
+  [dispatch, userId, navigate]
 );
 
-useEffect(() => {
-  console.log(account);
-  
-  if (!accountLoading && !account) {
-    toast.error(
-      "Your bank details were not found. Please add your bank details before requesting a withdrawal."
-    );
-
-    navigate("/admin/manage-bank");
-  }
-}, [account, accountLoading, navigate]);
 
 const onSubmit = async (data: WithdrawForm) => {
   if (!account) return;
