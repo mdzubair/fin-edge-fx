@@ -1,27 +1,38 @@
 import { useState } from "react";
 
-const WithdrawOptions = ({account}:{account:any}) => {
-  console.log("withdraw option");
-  
-  console.log(account);
-  
-  const {bankName, holderName, userId, accNo, ifscCode} = account;
+interface Account {
+  bankName?: string;
+  holderName?: string;
+  accNo?: string;
+  ifscCode?: string;
+}
+
+interface WithdrawOptionsProps {
+  account: Account | null;
+}
+
+const WithdrawOptions = ({ account }: WithdrawOptionsProps) => {
   const [selectedMethod, setSelectedMethod] = useState("bank");
+
+  if (!account) return null;
+
+  const {
+    bankName = "",
+    holderName = "",
+    accNo = "",
+    ifscCode = "",
+  } = account;
 
   return (
     <div className="container-fluid">
-
       <h4 className="fw-bold mb-3">Select Withdrawal Method</h4>
 
       <div className="row g-4">
-
         {/* Bank Transfer */}
         <div className="col-md-4">
           <div
             className={`card shadow-sm h-100 border ${
-              selectedMethod === "bank"
-                ? "border-primary border-3"
-                : ""
+              selectedMethod === "bank" ? "border-primary border-3" : ""
             }`}
             style={{ cursor: "pointer" }}
             onClick={() => setSelectedMethod("bank")}
@@ -41,7 +52,6 @@ const WithdrawOptions = ({account}:{account:any}) => {
         {/* Binance */}
         <div className="col-md-4">
           <div className="card shadow-sm h-100 border bg-light position-relative">
-
             <span className="position-absolute top-0 end-0 m-2">
               <i className="fas fa-lock text-danger"></i>
             </span>
@@ -55,10 +65,7 @@ const WithdrawOptions = ({account}:{account:any}) => {
                 Requires a successful deposit before withdrawal.
               </p>
 
-              <button
-                className="btn btn-outline-secondary"
-                disabled
-              >
+              <button className="btn btn-outline-secondary" disabled>
                 Locked
               </button>
             </div>
@@ -68,7 +75,6 @@ const WithdrawOptions = ({account}:{account:any}) => {
         {/* Crypto */}
         <div className="col-md-4">
           <div className="card shadow-sm h-100 border bg-light position-relative">
-
             <span className="position-absolute top-0 end-0 m-2">
               <i className="fas fa-lock text-danger"></i>
             </span>
@@ -82,10 +88,7 @@ const WithdrawOptions = ({account}:{account:any}) => {
                 Requires a successful deposit before withdrawal.
               </p>
 
-              <button
-                className="btn btn-outline-secondary"
-                disabled
-              >
+              <button className="btn btn-outline-secondary" disabled>
                 Locked
               </button>
             </div>
@@ -93,46 +96,61 @@ const WithdrawOptions = ({account}:{account:any}) => {
         </div>
       </div>
 
-      {/* Selected Form */}
-
       {selectedMethod === "bank" && (
         <div className="card shadow-sm mt-5">
           <div className="card-header">
-            <h5 className="mb-0">
-              Bank Withdrawal Details
-            </h5>
+            <h5 className="mb-0">Bank Withdrawal Details</h5>
           </div>
 
           <div className="card-body">
-
             <div className="row g-3">
-
               <div className="col-md-6">
-                <label className="form-label">
-                  Account Holder Name
-                </label>
-
-                <input type="text" className="form-control" placeholder="John Doe" value={holderName}/>
+                <label className="form-label">Account Holder Name</label>
+                <input
+                  type="text"
+                  className="form-control"
+                  value={holderName}
+                  readOnly
+                />
               </div>
 
               <div className="col-md-6">
                 <label className="form-label">Bank Name</label>
-                <input type="text" className="form-control" value={bankName} readOnly/>
+                <input
+                  type="text"
+                  className="form-control"
+                  value={bankName}
+                  readOnly
+                />
               </div>
 
               <div className="col-md-6">
                 <label className="form-label">Account Number</label>
-                <input type="text" className="form-control" value={accNo} readOnly/>
+                <input
+                  type="text"
+                  className="form-control"
+                  value={accNo}
+                  readOnly
+                />
               </div>
 
               <div className="col-md-6">
-                <label className="form-label"> IFSC / SWIFT Code</label>
-                <input type="text" className="form-control" value={ifscCode} readOnly/>
+                <label className="form-label">IFSC / SWIFT Code</label>
+                <input
+                  type="text"
+                  className="form-control"
+                  value={ifscCode}
+                  readOnly
+                />
               </div>
 
               <div className="col-md-6">
                 <label className="form-label">Withdrawal Amount</label>
-                <input type="number" className="form-control" />
+                <input
+                  type="number"
+                  className="form-control"
+                  placeholder="Enter amount"
+                />
               </div>
 
               <div className="col-12">
@@ -140,7 +158,6 @@ const WithdrawOptions = ({account}:{account:any}) => {
                   Submit Withdrawal
                 </button>
               </div>
-
             </div>
           </div>
         </div>
