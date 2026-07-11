@@ -47,19 +47,6 @@ const WithdrawOptions = ({userId}: WithdrawFormProps) => {
     }
   }, [dispatch, userId]);
 
-
-  
-  // const fetchAccount = useCallback(async () => {
-  //   try {
-  //     await dispatch(getSingleAccount(userId)).unwrap();
-  //   } catch (error) {
-  //     console.error(error);
-  //   }
-  // }, [dispatch, userId]);
-
-  // useEffect(() => {
-  //   fetchAccount();
-  // }, [fetchAccount]);
   
    useEffect(() => {
     if (!accountLoading && account === null ) {
@@ -126,9 +113,7 @@ const WithdrawOptions = ({userId}: WithdrawFormProps) => {
 
         {/* Binance */}
         <div className="col-md-4">
-          <div className={`card shadow-sm h-100 border ${
-              selectedMethod === "binance" ? "border-primary border-3" : "border bg-light position-relative"
-            }`}
+          <div className={`card shadow-sm h-100 border ${selectedMethod === "binance" ? "border-primary border-3" : "border bg-light position-relative disabled" }`}
             style={{ cursor: "pointer" }}
             onClick={() => handleSelectedMethod("binance")}>
             <span className="position-absolute top-0 end-0 m-2">
@@ -144,7 +129,7 @@ const WithdrawOptions = ({userId}: WithdrawFormProps) => {
                 Requires a successful deposit before withdrawal.
               </p>
 
-              <button className="btn btn-outline-secondary" disabled>
+              <button className="btn btn-outline-secondary">
                 Locked
               </button>
             </div>
@@ -153,9 +138,7 @@ const WithdrawOptions = ({userId}: WithdrawFormProps) => {
 
         {/* Crypto */}
         <div className="col-md-4">
-          <div  className={`card shadow-sm h-100 border ${
-              selectedMethod === "cryptocurrency" ? "border-primary border-3" : "border bg-light position-relative"
-            }`}
+          <div  className={`card shadow-sm h-100 border ${selectedMethod === "cryptocurrency" ? "border-primary border-3" : "border bg-light position-relative disabled" }`}
             style={{ cursor: "pointer" }}
             onClick={() => handleSelectedMethod("cryptocurrency")}>
             <span className="position-absolute top-0 end-0 m-2">
