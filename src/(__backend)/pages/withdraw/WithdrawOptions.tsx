@@ -28,60 +28,96 @@ interface WithdrawFormProps {
   userId: string;
 }
 const WithdrawOptions = ({userId}: WithdrawFormProps) => {
-  
-  const [terms, setTerms]= useState<boolean>(false)
-  const [selectedMethod, setSelectedMethod] = useState("");  
-  const [rupeeAmount, setRupeeAmount] = useState<number>(0);
-  const currency = useSelector((state: RootState) => state.currency);
-  const currencyVal =  currency?.currency?.currencyVal || "0"; 
-  const dispatch = useDispatch<AppDispatch>();  
-  const { account,loading: accountLoading, } = useSelector((state: RootState) => state.account);
+
+  const [terms, setTerms] = useState(false);
+  const [selectedMethod, setSelectedMethod] = useState("onlineBank");
+  const [rupeeAmount, setRupeeAmount] = useState(0);
+  const dispatch = useDispatch<AppDispatch>();
   const navigate = useNavigate();
+  const currency = useSelector((state: RootState) => state.currency);
+  const currencyVal = Number(currency?.currency?.currencyVal ?? 0);
 
-  const handleSelectedMethod = useCallback(async (methodType="onlineBank") => {
-    try {
-      setSelectedMethod(methodType);
-      await dispatch(getSingleAccount(userId)).unwrap();
-    } catch (error:any) {
-      toast.error(error.message)
-    }
-  }, [dispatch, userId]);
-
-  
-   useEffect(() => {
-    if (!accountLoading && account === null ) {
-      toast.error( "Your bank details were not found. Please add your bank details before requesting a withdrawal.");
-      navigate("/admin/manage-bank");
-    }
-  }, [ account, accountLoading, navigate,]);
+  const { account, loading: accountLoading,  } = useSelector((state: RootState) => state.account);
 
   const { register, handleSubmit, reset, setValue, formState: { errors },} = useForm<WithdrawForm>({
     resolver: yupResolver(withdrawNewSchema) as any,
     defaultValues: { amount: 0,},
   });
 
-
-  const onSubmit = async (data: WithdrawForm) => {
-    if(!account) return;
-    const payload = { ...data, bankId: account?._id, userId, payType: selectedMethod,};
+const handleSelectedMethod = useCallback(
+  async (methodType: string) => {
     try {
-      await dispatch(addWithdraw(payload)).unwrap();
-      await dispatch(fetchWithdrawByUserId({userId,  status:0})).unwrap();
-      toast.success("Withdrawal request submitted");
-      reset();
-      setRupeeAmount(0);
-      setTerms(false);
+      setSelectedMethod(methodType);
+      await dispatch(getSingleAccount(userId)).unwrap();
     } catch (error: any) {
-        toast.error(typeof error === "string" ? error : "Failed to submit withdrawal");
-      }
+      toast.error(error?.message || "Failed to fetch bank details.");
+    }
+  },
+  [dispatch, userId]
+);
+
+useEffect(() => {
+  if (!accountLoading && !account) {
+    toast.error(
+      "Your bank details were not found. Please add your bank details before requesting a withdrawal."
+    );
+
+    navigate("/admin/manage-bank");
+  }
+}, [account, accountLoading, navigate]);
+
+const onSubmit = async (data: WithdrawForm) => {
+  if (!account) return;
+
+  const payload = {
+    ...data,
+    bankId: account._id,
+    userId,
+    payType: selectedMethod,
   };
 
-  const handleRupeeChange = ( e: React.ChangeEvent<HTMLInputElement>) => {
-    const inr = Number(e.target.value) || 0;
-    setRupeeAmount(inr);
-    const usd = Number((inr / currencyVal).toFixed(2));
-    setValue("amount", usd, { shouldValidate: true, });
-  };
+  try {
+    await dispatch(addWithdraw(payload)).unwrap();
+    await dispatch(
+      fetchWithdrawByUserId({
+        userId,
+        status: 0,
+      })
+    ).unwrap();
+
+    toast.success("Withdrawal request submitted.");
+
+    reset({
+      amount: 0,
+    });
+
+    setRupeeAmount(0);
+    setTerms(false);
+  } catch (error: any) {
+    toast.error(error?.message || "Failed to submit withdrawal.");
+  }
+};
+
+const handleRupeeChange = (
+  e: React.ChangeEvent<HTMLInputElement>
+) => {
+  const inr = Number(e.target.value) || 0;
+
+  setRupeeAmount(inr);
+
+  if (!currencyVal) {
+    setValue("amount", 0);
+    return;
+  }
+
+  const usd = Number((inr / currencyVal).toFixed(2));
+
+  setValue("amount", usd, {
+    shouldValidate: true,
+    shouldDirty: true,
+    shouldTouch: true,
+  });
+};
 
 
   
