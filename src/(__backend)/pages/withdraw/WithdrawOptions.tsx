@@ -37,18 +37,20 @@ const WithdrawOptions = ({userId}: WithdrawFormProps) => {
   const currency = useSelector((state: RootState) => state.currency);
   const currencyVal = Number(currency?.currency?.currencyVal ?? 0);
 
-  const { account, loading: accountLoading,  } = useSelector((state: RootState) => state.account);
+  const { account,  } = useSelector((state: RootState) => state.account);
 
   const { register, handleSubmit, reset, setValue, formState: { errors },} = useForm<WithdrawForm>({
     resolver: yupResolver(withdrawNewSchema) as any,
-    defaultValues: { amount: 0,},
+    defaultValues: { amount: 0, },
   });
 
 const handleSelectedMethod = useCallback(async (methodType: string) => {
+  
+    setSelectedMethod(methodType);
+    if (methodType !== "onlineBank") return;
     try {
-      setSelectedMethod(methodType);
-      await dispatch(getSingleAccount(userId)).unwrap();
-       if (!accountLoading && !account) {
+       const accountData = await dispatch(getSingleAccount(userId)).unwrap();
+       if (accountData) {
         toast.error(
           "Your bank details were not found. Please add your bank details before requesting a withdrawal."
         );
@@ -63,7 +65,7 @@ const handleSelectedMethod = useCallback(async (methodType: string) => {
 );
 
 
-const onSubmit = async (data: any) => {
+const onSubmit = async (data: WithdrawForm) => {
   console.log(data);
   console.log(account);
   
