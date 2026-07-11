@@ -51,12 +51,9 @@ const handleSelectedMethod = useCallback(async (methodType: string) => {
     if (methodType !== "onlineBank") return;
     try {
        const accountData = await dispatch(getSingleAccount(userId)).unwrap();
-       if (accountData) {
-        toast.error(
-          "Your bank details were not found. Please add your bank details before requesting a withdrawal."
-        );
-
-        // navigate("/admin/manage-bank");
+       if (!accountData) {
+        toast.error("Your bank details were not found. Please add your bank details before requesting a withdrawal.");
+        navigate("/admin/manage-bank");
       }
     } catch (error: any) {
       toast.error(error?.message || "Failed to fetch bank details.");
