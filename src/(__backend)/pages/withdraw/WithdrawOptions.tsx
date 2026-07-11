@@ -22,6 +22,7 @@ interface WithdrawOptionsProps {
 }
 
 const WithdrawOptions = ({ account }: WithdrawOptionsProps) => {
+  const [terms, setTerms]= useState<boolean>(false)
   const [selectedMethod, setSelectedMethod] = useState("onlineBank");  
   const [rupeeAmount, setRupeeAmount] = useState<number>(0);
   const currency = useSelector((state: RootState) => state.currency);
@@ -115,7 +116,7 @@ const onSubmit = async (data: WithdrawForm) => {
                 Requires a successful deposit before withdrawal.
               </p>
 
-              <button className="btn btn-outline-secondary" >
+              <button className="btn btn-outline-secondary" disabled>
                 Locked
               </button>
             </div>
@@ -186,18 +187,31 @@ const onSubmit = async (data: WithdrawForm) => {
 
            
               <div className="col-md-4">
-                <label className="form-label">Withdrawal Amount</label>                
-                <input type="number" min={100} max={1000} step="1" {...register("amount", { valueAsNumber: true,  })} className={`form-control ${ errors.amount ? "is-invalid" : ""  }`} disabled={true} />
+                <label className="form-label">Withdrawal Amount ( <strong>USD</strong> )</label>                
+                <input type="number" min={15} max={1000} step="1" {...register("amount", { valueAsNumber: true,  })} className={`form-control ${ errors.amount ? "is-invalid" : ""  }`} disabled={true} />
                 {errors.amount && (
                   <div className="invalid-feedback"> {errors.amount.message}</div>
                 )}
               </div>
 
               <div className="col-12">
-                <button className="btn btn-primary">
-                  Submit Withdrawal
-                </button>
+                <div className="col-6">
+                  <input type="checkbox" name="" id="" onChange={(terms)=>setTerms(!terms)}/> I declare the following:
+                  <ul>
+                    <li>The withdrawal details provided above belong to me.</li>
+                    <li>I understand that any fund withdrawals from my trading account will result in the proportional removal at my trading bonus.</li>
+                    <li>I also acknowledge and accept that my withdrawal request may be amended and completed according to Fin Edge FX withdrawal priority procedure.</li>
+                  </ul>
+                </div>
+                
               </div>
+
+
+              <div className="col-12">
+                <button className="btn btn-primary" disabled={!terms}> Submit Withdrawal</button>
+              </div>
+
+              
             </div>
           </div>
         </div>
