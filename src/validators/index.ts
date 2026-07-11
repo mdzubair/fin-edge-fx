@@ -34,9 +34,8 @@ export const withdrawSchema = yup.object({
 });
 
 export const withdrawNewSchema = yup.object({
-  payType: yup.string().oneOf(["onlineBank", "binance", "cryptocurrency"]).required("Please select transaction type"),
-  amount: yup.number().transform((value, originalValue) => originalValue === "" ? undefined : value)
-    .typeError("Amount is required").required("Amount is required").min(15, "Minimum amount is $15").max(1000, "Maximum amount is $1000"),
+  payType: yup.string().oneOf(["onlineBank", "binance", "cryptocurrency"], "Please select a payment method").required("Please select a payment method"),
+  amount: yup.number().transform((value, originalValue) => originalValue === "" || originalValue === null ? undefined : value).typeError("Amount is required").required("Amount is required").min(15, "Minimum withdrawal amount is $15").max(1000, "Maximum withdrawal amount is $1000"),
 });
 
 
