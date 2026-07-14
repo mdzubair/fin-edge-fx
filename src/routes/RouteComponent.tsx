@@ -1,6 +1,13 @@
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import { lazy, Suspense } from "react";
-
+const CryptoDepositForm = lazy(()=> import("../(__backend)/pages/deposit-funds/CryptoDepositForm"));
+const BinancePayForm = lazy(()=> import("../(__backend)/pages/deposit-funds/BinancePayForm"));
+const LocalBankTransferForm = lazy(()=> import("../(__backend)/pages/deposit-funds/LocalBankTransferForm"));
+const OnlineTransferForm = lazy(()=> import("../(__backend)/pages/deposit-funds/OnlineTransferForm"));
+const UpiDepositForm = lazy(()=> import("../(__backend)/pages/deposit-funds/UpiDepositForm"));
+const DepositFormOptions = lazy(()=> import("../(__backend)/pages/deposit-funds/DeposintFormOptions"));
+const DepositUsdPayDetails = lazy(()=> import("../(__backend)/pages/deposit-funds/DepositUsdPayDetails"));
+const DepositUSDSubOptiopns = lazy(()=> import("../(__backend)/pages/deposit-funds/DepositUSDSubOptiopns"));
 // Layouts
 const FrontLayout = lazy(() => import("../layouts/Frontlayout"));
 const BackendLayout = lazy(() => import("../layouts/BackendLayout"));
@@ -92,6 +99,14 @@ function RouteComponent() {
             <Route path="offer" element={<Offer />} />
             <Route path="help-and-support" element={<Ticket />} />
             <Route path="v-ticket/:tokenId" element={<TicketReplyForm />} />
+            <Route path="deposit-optiopns" element={<DepositFormOptions />} />
+            <Route path="deposit-funds-usd" element={<DepositUSDSubOptiopns />} />
+            <Route path="deposit-usd-pay-details" element={<DepositUsdPayDetails />} />
+            <Route path="deposit-funds-upi" element={<UpiDepositForm />} />
+            <Route path="deposit-funds-bank" element={<OnlineTransferForm />} />
+            <Route path="deposit-funds-local" element={<LocalBankTransferForm />} />
+            <Route path="deposit-funds-binance" element={<BinancePayForm />} />
+            <Route path="deposit-funds-crypto" element={<CryptoDepositForm />} />
           </Route>
         </Routes>
       </Suspense>

@@ -6,8 +6,7 @@ import { getSingleAccount } from "../../../redux/slice/account";
 import { IMG_URL } from "../../../api/default-data";
 import UploadReceiptForm from "./UploadReceiptForm";
 import toast from "react-hot-toast";
-import { Link, useParams } from "react-router-dom";
-// import DeposintFormOptions from "./DeposintFormOptions";
+import { useParams } from "react-router-dom";
 function DepositFunds() {
   const dispatch = useDispatch<AppDispatch>();
   const { userId } = useParams<{ userId: string }>();  
@@ -92,6 +91,7 @@ function DepositFunds() {
   return (
     <>
      {/* {loading && (<Loader /> )} */}
+
       {auth && auth?.user?.userType==0 && <UploadReceiptForm userId={paramUserId} />}
 
       <div className="card mt-4">
@@ -99,14 +99,6 @@ function DepositFunds() {
           <h5 className="mb-0">Receipt List</h5>
 
           <div className="btn-group">
-             <Link
-              to="/admin/deposit-optiopns"
-              className={`btn btn-sm btn-outline-primary`}
-             
-            >
-              Add Deposit
-            </Link>
-
             <button
               type="button"
               className={`btn btn-sm ${

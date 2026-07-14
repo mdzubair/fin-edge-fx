@@ -48,6 +48,7 @@ export const submitDeposit = createAsyncThunk<ReceiptResponse, FormData, { rejec
     }
   }
 );
+
 const depositSlice = createSlice({
   name: "deposit",
   initialState: initialReceiptState,

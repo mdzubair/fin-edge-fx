@@ -89,9 +89,11 @@ return (
         <div className="card shadow-sm h-100">
           <div className="card-header">
             <h5 className="mb-0">App Credentials</h5>
+            
           </div>
 
           <div className="card-body">
+            <p className="text-muted">You will need these details to log in to MetaTrader. If you forget your Metatrader password, you can change It at any time. </p>
             <form onSubmit={handleSubmit(onSubmit)}>
               <div className="mb-3">
                 <label className="form-label">Username</label>

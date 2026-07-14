@@ -112,3 +112,33 @@ export const createTicketSchema = yup.object({
 export const replyTicketSchema = yup.object({
   message: yup.string().required("Reply is required").min(2, "Minimum 2 characters"),
 });
+
+
+export const onlineTransferSchema = yup.object({
+  bankId: yup.string().required("Please select a bank"),
+
+  inrAmount: yup
+    .number()
+    .typeError("Amount is required")
+    .required("Amount is required")
+    .min(3000, "Minimum deposit is ₹3,000")
+    .max(200000, "Maximum deposit is ₹200,000"),
+
+  declaration: yup
+    .boolean()
+    .oneOf([true], "You must accept the declaration"),
+});
+
+export const upiTransferSchema = yup.object({
+  // bankId: yup.string().required("Please select a bank"),
+  inrAmount: yup
+    .number()
+    .typeError("Amount is required")
+    .required("Amount is required")
+    .min(1000, "Minimum deposit is ₹8,000")
+    .max(100000, "Maximum deposit is ₹100,000"),
+
+  declaration: yup
+    .boolean()
+    .oneOf([true], "You must accept the declaration"),
+});

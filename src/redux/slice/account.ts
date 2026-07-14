@@ -34,6 +34,27 @@ export const fetchAccountByUserId = createAsyncThunk<
   }
 );
 
+
+// Get Account List By User ID
+export const fetchAdminAccount = createAsyncThunk<
+  AccountListResponse,
+  void,
+  { rejectValue: string }
+>(
+  "account/admin-account-list",
+  async (__, { rejectWithValue }) => {
+    try {
+      return await accountApi.fetchAdminAccount();
+    } catch (error: any) {
+      return rejectWithValue(
+        error?.response?.data?.message ||
+          error?.message ||
+          "Failed to fetch account list"
+      );
+    }
+  }
+);
+
 // Get Single Account
 export const getSingleAccount = createAsyncThunk<
   AccountResponse,
@@ -132,6 +153,20 @@ const accountSlice = createSlice({
         state.error = action.payload || "Failed to fetch account list";
       })
 
+      .addCase(fetchAdminAccount.pending, (state) => {
+        state.loading = true;
+        state.error = "";
+      })
+      .addCase(fetchAdminAccount.fulfilled, (state, action) => {
+        state.loading = false;
+        state.message = action.payload.message;
+        state.accounts = action.payload.data;
+      })
+      .addCase(fetchAdminAccount.rejected, (state, action) => {
+        state.loading = false;
+        state.error = action.payload || "Failed to fetch account list";
+      })
+
       // Single Account
       .addCase(getSingleAccount.pending, (state) => {
         state.loading = true;
@@ -189,6 +224,7 @@ const accountSlice = createSlice({
       state.loading = false;
       state.error = action.payload || "Failed to delete account";
     })
+
   },
 });
 

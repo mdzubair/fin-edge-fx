@@ -28,7 +28,8 @@ export const fetchWithdrawByUserId = createAsyncThunk<WithdrawListResponse, With
     try {
       return await withdrawApi.fetchWithdrawByUser(userId, status);
     } catch (error: any) {
-      return rejectWithValue( error?.response?.data?.message || error?.message || "Failed to fetch withdraw list");
+      // return rejectWithValue( error?.response?.data?.message || error?.message || "Failed to fetch withdraw list");
+       return rejectWithValue(error.message);
     }
   }
 );
@@ -38,7 +39,8 @@ export const getSingleWithdraw = createAsyncThunk<WithdrawResponse,string,{ reje
     try {
       return await withdrawApi.getWithdrawById(rowId);
     } catch (error: any) {
-        return rejectWithValue( error?.response?.data?.message || error?.message || "Failed to fetch withdraw details");
+        // return rejectWithValue( error?.response?.data?.message || error?.message || "Failed to fetch withdraw details");
+         return rejectWithValue(error.message);
     }
   }
 );
@@ -59,7 +61,8 @@ export const addWithdraw = createAsyncThunk<WithdrawResponse, WithdrawFormPayloa
     try {
       return await withdrawApi.store(data);
     } catch (error: any) {
-       return rejectWithValue( error?.response?.data?.message || error?.message || "Failed to fetch withdraw details");
+      //  return rejectWithValue( error?.response?.data?.message || error?.message || "Failed to fetch withdraw details");
+       return rejectWithValue(error.message);
     }
   }
 );
@@ -68,7 +71,8 @@ export const updateWithdrawStatus = createAsyncThunk<WithdrawResponse, WithdrawS
     try {
       return await withdrawApi.updateStatus(rowId, status);
     } catch (error: any) {
-        return rejectWithValue( error?.response?.data?.message || error?.message || "Failed to update withdraw status");      
+        // return rejectWithValue( error?.response?.data?.message || error?.message || "Failed to update withdraw status");      
+         return rejectWithValue(error.message);
     }
   }
 );

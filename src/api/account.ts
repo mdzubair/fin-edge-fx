@@ -19,6 +19,16 @@ export const fetchAccountByUserId = async(userId:string) => {
     }
 }
 
+
+export const fetchAdminAccount = async() => {
+    try {
+        const response = await BASE_URL.get(`/account/admin/account`);
+        return response.data;
+    } catch (error) {
+        throw error;
+    }
+}
+
 // Create Account
 export const store = async (data: FormData) => {
   try {

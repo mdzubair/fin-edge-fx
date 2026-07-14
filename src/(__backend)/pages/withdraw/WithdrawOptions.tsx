@@ -8,15 +8,6 @@ import toast from "react-hot-toast";
 import { addWithdraw, fetchWithdrawByUserId } from "../../../redux/slice/withdraw";
 import { getSingleAccount } from "../../../redux/slice/account";
 import { useNavigate } from "react-router-dom";
-// interface Account {
-//   _id:string;
-//   userId:string;
-//   bankName?: string;
-//   holderName?: string;
-//   accNo?: string;
-//   ifscCode?: string;
-// }
-
 type WithdrawForm = {
   userId: string;
   bankId: string;
@@ -41,60 +32,41 @@ const WithdrawOptions = ({userId}: WithdrawFormProps) => {
 
   const { register, handleSubmit, reset, setValue, formState: { errors },} = useForm<WithdrawForm>({
     resolver: yupResolver(withdrawNewSchema) as any,
-    defaultValues: { amount: 0, payType:selectedMethod},
+    defaultValues: { amount: 0},
   });
 
-const handleSelectedMethod = useCallback(async (methodType: string) => {
-  console.log(methodType);
-  
-    setSelectedMethod(methodType);
-    if (methodType !== "onlineBank") return;
-    try {
-       const accountData = await dispatch(getSingleAccount(userId)).unwrap();
-       if (!accountData) {
-        toast.error("Your bank details were not found. Please add your bank details before requesting a withdrawal.");
-        navigate("/admin/manage-bank");
+  const handleSelectedMethod = useCallback(async (methodType: string) => {  
+      setSelectedMethod(methodType);
+      setValue("payType", methodType)
+      // if (methodType !== "onlineBank") return;
+      try {
+        const accountData = await dispatch(getSingleAccount(userId)).unwrap();
+        if (!accountData) {
+          toast.error("Your bank details were not found. Please add your bank details before requesting a withdrawal.");
+          navigate("/admin/manage-bank");
+        }
+      } catch (error: any) {
+        toast.error(error?.message || "Failed to fetch bank details.");
       }
-    } catch (error: any) {
-      toast.error(error?.message || "Failed to fetch bank details.");
-    }
-  },
-  [dispatch, userId, navigate]
-);
+    },
+    [dispatch, userId, navigate]
+  );
 
 
 const onSubmit = async (data: WithdrawForm) => {
-  console.log(data);
-  console.log(account);
   
   if (!account) return;
-
-  const payload = {
-    ...data,
-    bankId: account._id,
-    userId,
-    payType: selectedMethod,
-  };
-
+  const payload = { ...data, bankId: account._id, userId, };
   try {
     await dispatch(addWithdraw(payload)).unwrap();
-    await dispatch(
-      fetchWithdrawByUserId({
-        userId,
-        status: 0,
-      })
-    ).unwrap();
-
+    await dispatch(fetchWithdrawByUserId({ userId, status: 0,})).unwrap();
     toast.success("Withdrawal request submitted.");
-
-    reset({
-      amount: 0,
-    });
-
+    reset();
     setRupeeAmount(0);
     setTerms(false);
+    setSelectedMethod("");
   } catch (error: any) {
-    toast.error(error?.message || "Failed to submit withdrawal.");
+    toast.error(error || "Failed to submit withdrawal.");
   }
 };
 
@@ -149,7 +121,7 @@ const handleRupeeChange = (
 
         {/* Binance */}
         <div className="col-md-4">
-          <div className={`card shadow-sm h-100 border ${selectedMethod === "binance" ? "border-primary border-3" : "border bg-light position-relative disabled" }`}
+          <div className={`card shadow-sm h-100 border ${selectedMethod === "binance" ? "border-primary border-3" : "border bg-light position-relative" }`}
             style={{ cursor: "pointer" }}
             onClick={() => handleSelectedMethod("binance")}>
             <span className="position-absolute top-0 end-0 m-2">
@@ -165,7 +137,7 @@ const handleRupeeChange = (
                 Requires a successful deposit before withdrawal.
               </p>
 
-              <button className="btn btn-outline-secondary">
+              <button className="btn btn-outline-secondary disabled">
                 Locked
               </button>
             </div>
@@ -174,7 +146,7 @@ const handleRupeeChange = (
 
         {/* Crypto */}
         <div className="col-md-4">
-          <div  className={`card shadow-sm h-100 border ${selectedMethod === "cryptocurrency" ? "border-primary border-3" : "border bg-light position-relative disabled" }`}
+          <div  className={`card shadow-sm h-100 border ${selectedMethod === "cryptocurrency" ? "border-primary border-3" : "border bg-light position-relative" }`}
             style={{ cursor: "pointer" }}
             onClick={() => handleSelectedMethod("cryptocurrency")}>
             <span className="position-absolute top-0 end-0 m-2">
@@ -199,8 +171,12 @@ const handleRupeeChange = (
       </div>
 
       {selectedMethod === "onlineBank" && (
-        <form onSubmit={handleSubmit(onSubmit)}>
-        <div className="card shadow-sm mt-5">
+        <form  onSubmit={handleSubmit(
+        onSubmit,
+        (errors) => {
+            console.log(errors);
+        }
+    )} > <div className="card shadow-sm mt-5">
           <div className="card-header">
             <h5 className="mb-0">Bank Withdrawal Details</h5>
           </div>
@@ -209,22 +185,22 @@ const handleRupeeChange = (
             <div className="row g-3">
               <div className="col-md-4">
                 <label className="form-label">Account Holder Name</label>
-                <input type="text" className="form-control" value={account?.holderName} readOnly/>
+                <input type="text" className="form-control" value={account?.holderName  ?? ""} readOnly/>
               </div>
 
               <div className="col-md-4">
                 <label className="form-label">Bank Name</label>
-                <input type="text" className="form-control" value={account?.bankName} readOnly/>
+                <input type="text" className="form-control" value={account?.bankName  ?? ""} readOnly/>
               </div>
 
               <div className="col-md-4">
                 <label className="form-label">Account Number</label>
-                <input type="text" className="form-control" value={account?.accNo} readOnly/>
+                <input type="text" className="form-control" value={account?.accNo  ?? ""} readOnly/>
               </div>
 
               <div className="col-md-4">
                 <label className="form-label">IFSC / SWIFT Code</label>
-                <input type="text" className="form-control" value={account?.ifscCode} readOnly/>
+                <input type="text" className="form-control" value={account?.ifscCode  ?? ""} readOnly/>
               </div>
 
               <div className="col-md-4">
@@ -234,8 +210,8 @@ const handleRupeeChange = (
 
            
               <div className="col-md-4">
-                <label className="form-label">Withdrawal Amount ( <strong>USD</strong> )</label>                
-                <input type="number" min={15} max={1000} step="1" {...register("amount", { valueAsNumber: true,  })} className={`form-control ${ errors.amount ? "is-invalid" : ""  }`} disabled={true} />
+                <label className="form-label">Withdrawal Amount ( <strong>$1 USD</strong> )</label>                
+                <input type="number" min={15} max={1000} step="1" {...register("amount", { valueAsNumber: true,  })} className={`form-control ${ errors.amount ? "is-invalid" : ""  }`} readOnly />
                 {errors.amount && (
                   <div className="invalid-feedback"> {errors.amount.message}</div>
                 )}

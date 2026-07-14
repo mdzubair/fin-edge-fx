@@ -71,7 +71,7 @@ useEffect(() => {
               <div className="d-flex align-items-center bg-light px-3 py-2 rounded shadow-sm">
                 <i className="fas fa-wallet text-success me-2"></i>
                 <span className="fw-semibold">
-                  ${auth?.user?.wallet ?? 0}
+                  ${(auth?.user?.wallet).toFixed(2) ?? 0}
                 </span>
               </div>
             </li>

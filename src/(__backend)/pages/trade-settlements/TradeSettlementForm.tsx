@@ -64,7 +64,7 @@ function TradeSettlementForm({
     await dispatch(
       settlementList({
         userId,
-        status: "add_val",
+        status: 0,
       })
     ).unwrap();
     setRupeeAmount(0);

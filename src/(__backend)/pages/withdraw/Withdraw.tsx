@@ -12,6 +12,7 @@ import {
   fetchWithdrawByUserId,
   updateWithdrawStatus,
 } from "../../../redux/slice/withdraw";
+import WithdrawDetailsModal from "./WithdrawDetailsModal";
 
 // import { getSingleAccount } from "../../../redux/slice/account";
 
@@ -100,6 +101,13 @@ function Withdraw() {
     }
   };
 
+   const [showModal, setShowModal] = useState(false);
+  const [selectedWithdraw, setSelectedWithdraw] = useState<any>(null);
+
+  const handleView = (item: any) => {
+    setSelectedWithdraw(item);
+    setShowModal(true);
+  };
   return (
     <>
      
@@ -156,7 +164,7 @@ function Withdraw() {
                   <th>Pay By</th>
                   <th>Status</th>
                   <th>Date</th>
-                  {auth?.user?.userType === 1 && <th>Action</th>}
+                  <th>Action</th>
                 </tr>
               </thead>
 
@@ -194,32 +202,33 @@ function Withdraw() {
                           minute: "2-digit",
                         })}
                       </td>
-
-                      {auth?.user?.userType === 1 && (
                         <td>
-                          {item.status === 0 && (
-                            <div className="d-flex gap-2">
-                              <button
-                                className="btn btn-sm btn-outline-success"
-                                onClick={() =>
-                                  changeWithdrawStatus(item._id, 1)
-                                }
-                              >
-                                Complete
-                              </button>
+                          <div className="d-flex gap-2">
+                            <WithdrawDetailsModal show={showModal} onClose={() => setShowModal(false)} withdraw={selectedWithdraw} />
+                             <button className="btn btn-outline-primary btn-sm" onClick={() => handleView(item)} >View</button>
+                            {auth?.user?.userType === 1 &&  item.status === 0 && (                        
+                              <>
+                                <button
+                                  className="btn btn-sm btn-outline-success"
+                                  onClick={() =>
+                                    changeWithdrawStatus(item._id, 1)
+                                  }
+                                >
+                                  Complete
+                                </button>
 
-                              <button
-                                className="btn btn-sm btn-outline-danger"
-                                onClick={() =>
-                                  changeWithdrawStatus(item._id, 2)
-                                }
-                              >
-                                Cancel
-                              </button>
-                            </div>
-                          )}
-                        </td>
-                      )}
+                                <button
+                                  className="btn btn-sm btn-outline-danger"
+                                  onClick={() =>
+                                    changeWithdrawStatus(item._id, 2)
+                                  }
+                                >
+                                  Cancel
+                                </button>
+                              </>
+                            )}
+                          </div>
+                       </td>
                     </tr>
                   ))}
 
